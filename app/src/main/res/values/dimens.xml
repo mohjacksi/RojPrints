@@ -3,4 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="shop_button_height">125dp</dimen>
+    <dimen name="photos_list_spacing">3dp</dimen>
+
 </resources>
