@@ -33,7 +33,7 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
         final ArrayList<BoxSize> boxSizes = new ArrayList<>();
         boxSizes.add(new BoxSize(1,"15 X 15 cm","2,500 per page"));
         boxSizes.add(new BoxSize(2,"15 X 20 cm","3,000 per page"));
-        boxSizes.add(new BoxSize(1,"20 X 20 cm","4,000 per page"));
+        boxSizes.add(new BoxSize(3,"20 X 20 cm","4,000 per page"));
         ListView list = findViewById(R.id.box_size_listview);
         list.setAdapter(new BoxSizesAdapter(this,boxSizes));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
