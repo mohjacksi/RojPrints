@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,9 +32,9 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
         setContentView(R.layout.activity_simple_album_box_size);
 
         final ArrayList<BoxSize> boxSizes = new ArrayList<>();
-        boxSizes.add(new BoxSize(1,"15 X 15 cm","2,500 per page"));
-        boxSizes.add(new BoxSize(2,"15 X 20 cm","3,000 per page"));
-        boxSizes.add(new BoxSize(3,"20 X 20 cm","4,000 per page"));
+        boxSizes.add(new BoxSize(1,"15 X 15 cm","2,500 per page",R.drawable._15x15));
+        boxSizes.add(new BoxSize(2,"15 X 20 cm","3,000 per page",R.drawable._15x20));
+        boxSizes.add(new BoxSize(3,"20 X 20 cm","4,000 per page",R.drawable._20x20));
         ListView list = findViewById(R.id.box_size_listview);
         list.setAdapter(new BoxSizesAdapter(this,boxSizes));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -87,11 +88,13 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
         public int size;
         public String title;
         public String desc;
+        public int image;
 
-        public BoxSize(int size, String title, String desc) {
+        public BoxSize(int size, String title, String desc, int image) {
             this.size = size;
             this.title = title;
             this.desc = desc;
+            this.image = image;
         }
     }
     public class BoxSizesAdapter extends ArrayAdapter<BoxSize> {
@@ -102,17 +105,20 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get the data item for this position
-            BoxSize user = getItem(position);
+            BoxSize box = getItem(position);
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_box_size, parent, false);
             }
-            // Lookup view for data population
-            TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-            TextView tvDesc = (TextView) convertView.findViewById(R.id.tvDesc);
-            // Populate the data into the template view using the data object
-            tvTitle.setText(user.title);
-            tvDesc.setText(user.desc);
+//            // Lookup view for data population
+//            TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+//            TextView tvDesc = (TextView) convertView.findViewById(R.id.tvDesc);
+//            // Populate the data into the template view using the data object
+//            tvTitle.setText(user.title);
+//            tvDesc.setText(user.desc);
+
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+            imageView.setImageResource(box.image);
             // Return the completed view to render on screen
             return convertView;
         }

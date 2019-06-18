@@ -27,6 +27,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private LayoutInflater inflater;
     private int albumSize;
     private float[] ratio;
+    private ConstraintSet set = new ConstraintSet();
 
     private SimpleAlbumImagesListActivity simpleAlbumImagesListActivity;
 
@@ -43,7 +44,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ImageViewHolder(inflater.inflate(R.layout.album_list_item_square, parent, false));
     }
-    private ConstraintSet set = new ConstraintSet();
     @Override
     public void onBindViewHolder(ImageViewHolder holder, final int position) {
 

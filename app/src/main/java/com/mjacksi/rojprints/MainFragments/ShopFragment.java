@@ -14,6 +14,7 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.mjacksi.rojprints.PhotoPrint.PhotoPrintSize;
 import com.mjacksi.rojprints.R;
 import com.mjacksi.rojprints.SimpleAlbum.SimpleAlbumBoxSize;
 
@@ -54,12 +55,19 @@ public class ShopFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "photo print", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getContext(), PhotoPrintSize.class);
+                i.putExtra("type","photo_print");
+                startActivity(i);
             }
         });
         homeDecor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "home decor", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getContext(), PhotoPrintSize.class);
+                i.putExtra("type","home_decor");
+                startActivity(i);
+
             }
         });
 
@@ -67,13 +75,10 @@ public class ShopFragment extends Fragment {
         SliderLayout mDemoSlider  = (SliderLayout)view.findViewById(R.id.slider);;
 
         HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("description1",R.drawable.bigimage1);
-        file_maps.put("description2",R.drawable.bigimage2);
-        file_maps.put("description3",R.drawable.bigimage3);
-        file_maps.put("description4", R.drawable.bigimage4);
-        file_maps.put("description5", R.drawable.bigimage5);
-        file_maps.put("description6", R.drawable.bigimage6);
-        file_maps.put("description7", R.drawable.bigimage7);
+        file_maps.put("description1",R.drawable.slidshow1);
+        file_maps.put("description2",R.drawable.slidshow2);
+        file_maps.put("description3",R.drawable.slidshow3);
+        file_maps.put("description3",R.drawable.slidshow4);
 
         for(String name : file_maps.keySet()){
             TextSliderView textSliderView = new TextSliderView(getContext());
@@ -95,6 +100,7 @@ public class ShopFragment extends Fragment {
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mDemoSlider.setCustomAnimation(new DescriptionAnimation());
         mDemoSlider.setDuration(4000);
+
         return view;
     }
 
