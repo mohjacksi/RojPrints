@@ -1,12 +1,17 @@
 package com.mjacksi.rojprints;
 
 import android.os.Bundle;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
+
 import android.view.MenuItem;
+import android.view.View;
 
 import com.mjacksi.rojprints.MainFragments.ProjectsFragment;
 import com.mjacksi.rojprints.MainFragments.SettingsFragment;
@@ -30,14 +35,17 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_shop:
                     fm.beginTransaction().hide(active).show(shopFragment).commit();
                     active = shopFragment;
+                    toolbar.setTitle("RojPrint-Shop");
                     return true;
                 case R.id.navigation_projects:
-                        fm.beginTransaction().hide(active).show(projectsFragment).commit();
-                        active = projectsFragment;
+                    fm.beginTransaction().hide(active).show(projectsFragment).commit();
+                    active = projectsFragment;
+                    toolbar.setTitle("RojPrint-Projects");
                     return true;
                 case R.id.navigation_settings:
                     fm.beginTransaction().hide(active).show(settingsFragment).commit();
                     active = settingsFragment;
+                    toolbar.setTitle("RojPrint-Settings");
                     return true;
             }
             return false;
@@ -55,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction().add(R.id.fragment_container, settingsFragment, "3").hide(settingsFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container, projectsFragment, "2").hide(projectsFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container, shopFragment, "1").commit();
+        toolbarSetup();
+    }
 
+    Toolbar toolbar;
+    private void toolbarSetup() {
+        toolbar = findViewById(R.id.order_toolbar);
+        toolbar.setTitle("RojPrint-Shop");
+        setSupportActionBar(toolbar);
     }
 }

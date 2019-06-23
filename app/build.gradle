@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 28
@@ -43,4 +44,7 @@ dependencies {
     // Photo filter
     implementation 'ja.burhanrashid52:photoeditor:0.4.0'
     implementation files('libs/commons-lang3-3.4.jar')
+
+
+
 }

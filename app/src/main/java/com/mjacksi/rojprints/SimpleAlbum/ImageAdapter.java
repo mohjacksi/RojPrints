@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -67,6 +69,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 simpleAlbumImagesListActivity.editImageAt(position);
             }
         });
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                images.remove(position);
+                simpleAlbumImagesListActivity.deleteImageAt(position);
+            }
+        });
 
         if(position == 0)
             holder.sequence.setText("The cover of your album");
@@ -97,12 +106,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         TextView sequence;
         FrameLayout frameLayout;
         ConstraintLayout constraintLayout;
+
+        ImageButton deleteButton;
         public ImageViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.image_view);
             sequence = itemView.findViewById(R.id.sequence);
             frameLayout = itemView.findViewById(R.id.frame_layout);
             constraintLayout = itemView.findViewById(R.id.constraint_layout);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
     }
 }

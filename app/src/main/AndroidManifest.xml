@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mjacksi.rojprints">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -13,12 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PhotoPrint.ChoosePhoto"></activity>
+        <activity android:name=".PhotoPrint.ChoosePhoto"/>
         <activity android:name=".PhotoPrint.PhotoPrintSize" />
         <activity android:name=".SimpleAlbum.SimpleAlbumBoxSize" />
-        <activity android:name=".SimpleAlbum.SimpleAlbumImagesListActivity" />
+        <activity android:name=".SimpleAlbum.SimpleAlbumImagesListActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/app_name"/>
         <activity
             android:name=".SplashActivity"

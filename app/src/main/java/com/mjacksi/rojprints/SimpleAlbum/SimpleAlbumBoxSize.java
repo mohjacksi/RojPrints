@@ -2,6 +2,7 @@ package com.mjacksi.rojprints.SimpleAlbum;
 
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,21 +33,22 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
         setContentView(R.layout.activity_simple_album_box_size);
 
         final ArrayList<BoxSize> boxSizes = new ArrayList<>();
-        boxSizes.add(new BoxSize(1,"15 X 15 cm","2,500 per page",R.drawable._15x15));
-        boxSizes.add(new BoxSize(2,"15 X 20 cm","3,000 per page",R.drawable._15x20));
-        boxSizes.add(new BoxSize(3,"20 X 20 cm","4,000 per page",R.drawable._20x20));
+        boxSizes.add(new BoxSize(1,"15 X 15 cm","2,500 per page",R.drawable._15x15,2500));
+        boxSizes.add(new BoxSize(2,"15 X 20 cm","3,000 per page",R.drawable._15x20,3000));
+        boxSizes.add(new BoxSize(3,"20 X 20 cm","4,000 per page",R.drawable._20x20,4000));
         ListView list = findViewById(R.id.box_size_listview);
         list.setAdapter(new BoxSizesAdapter(this,boxSizes));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(SimpleAlbumBoxSize.this,
-                        "size " + boxSizes.get(position).size
+                        "title " + boxSizes.get(position).size
                         , Toast.LENGTH_SHORT).show();
 
                 // Todo:
                 Intent i = new Intent(SimpleAlbumBoxSize.this,SimpleAlbumImagesListActivity.class);
-                i.putExtra("size",boxSizes.get(position).size);
+                i.putExtra("title",boxSizes.get(position).title);
+                i.putExtra("price_per_page",boxSizes.get(position).pricePrePage);
                 startActivity(i);
             }
         });
@@ -54,13 +56,12 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
         SliderLayout mDemoSlider  = (SliderLayout)findViewById(R.id.slider);;
 
         HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("description1",R.drawable.bigimage1);
-        file_maps.put("description2",R.drawable.bigimage2);
-        file_maps.put("description3",R.drawable.bigimage3);
-        file_maps.put("description4", R.drawable.bigimage4);
-        file_maps.put("description5", R.drawable.bigimage5);
-        file_maps.put("description6", R.drawable.bigimage6);
-        file_maps.put("description7", R.drawable.bigimage7);
+        file_maps.put("1",R.drawable.album1);
+        file_maps.put("2",R.drawable.album2);
+        file_maps.put("3",R.drawable.album3);
+        file_maps.put("4", R.drawable.album4);
+        file_maps.put("5", R.drawable.album5);
+        file_maps.put("6", R.drawable.album6);
 
         for(String name : file_maps.keySet()){
             TextSliderView textSliderView = new TextSliderView(this);
@@ -82,19 +83,36 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mDemoSlider.setCustomAnimation(new DescriptionAnimation());
         mDemoSlider.setDuration(4000);
-    }
 
+        toolbarSetup();
+    }
+    private void toolbarSetup() {
+        Toolbar toolbar = findViewById(R.id.order_toolbar);
+        toolbar.setTitle("New Album");
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
     public class BoxSize {
         public int size;
         public String title;
         public String desc;
         public int image;
-
-        public BoxSize(int size, String title, String desc, int image) {
+        public int pricePrePage;
+        public BoxSize(int size, String title, String desc, int image, int pricePrePage) {
             this.size = size;
             this.title = title;
             this.desc = desc;
             this.image = image;
+            this.pricePrePage = pricePrePage;
         }
     }
     public class BoxSizesAdapter extends ArrayAdapter<BoxSize> {

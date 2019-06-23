@@ -1,15 +1,18 @@
 package com.mjacksi.rojprints.PhotoPrint;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,31 +40,38 @@ public class PhotoPrintSize extends AppCompatActivity {
 
 
         if(getIntent().getStringExtra("type").equals("photo_print")) {
-            boxSizes.add(new ImageSize(1, 1.5f, "10 X 15 cm", "2,500 per page"));
-            boxSizes.add(new ImageSize(1, 1.15f, "13 X 15 cm", "3,000 per page"));
-            boxSizes.add(new ImageSize(1, 1.14f, "15 X 21 cm", "4,000 per page"));
-            boxSizes.add(new ImageSize(1, 1, "5 X 5 cm", "3000 per page"));
-            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "3000 per page"));
-            file_maps.put("description1",R.drawable.printedimage1);
-            file_maps.put("description2",R.drawable.printedimage2);
-            file_maps.put("description3",R.drawable.printedimage3);
+            toolbarSetup("Photo print");
+            boxSizes.add(new ImageSize(1, 1.5f, "10 X 15 cm", "2,500 per page",R.drawable.photo_print_10x15));
+            boxSizes.add(new ImageSize(1, 1.14f, "15 X 21 cm", "4,000 per page",R.drawable.photo_print_15x21));
+            boxSizes.add(new ImageSize(1, 1.38f, "13 X 18 cm", "3,000 per page",R.drawable.photo_print_13x18));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "3000 per page",R.drawable.photos4));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "3000 per page",R.drawable.photos6));
+            boxSizes.add(new ImageSize(1, 1, "5 X 5 cm", "3000 per page",R.drawable.photos6_5x5));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "3000 per page",R.drawable.photos6));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "3000 per page",R.drawable.photos8));
+            file_maps.put("1",R.drawable.photo_print1);
+            file_maps.put("2",R.drawable.photo_print2);
+            file_maps.put("3",R.drawable.photo_print3);
+            file_maps.put("4",R.drawable.photo_print4);
+            file_maps.put("5",R.drawable.photo_print5);
 
         }else{
-            boxSizes.add(new ImageSize(1, 1.5f, "20 X 30 cm", "8,000 per page"));
-            boxSizes.add(new ImageSize(1, 1.5f, "30 X 45 cm", "15,000 per page"));
-            boxSizes.add(new ImageSize(1, 2, "30 X 60 cm", "22,000 per page"));
-            boxSizes.add(new ImageSize(1, 3, "30 X 90 cm", "26,000 per page"));
-            boxSizes.add(new ImageSize(1, 1.5f, "40 X 60 cm", "36,000 per page"));
-            boxSizes.add(new ImageSize(1, 1.5f, "50 X 75 cm", "45,000 per page"));
-            boxSizes.add(new ImageSize(1, 1.5f, "60 X 90 cm", "60,000 per page"));
+            toolbarSetup("Home decor");
+            boxSizes.add(new ImageSize(1, 1.5f, "20 X 30 cm", "8,000 per page",R.drawable._20x30));
+            boxSizes.add(new ImageSize(1, 1.5f, "30 X 45 cm", "15,000 per page",R.drawable._30x45));
+            boxSizes.add(new ImageSize(1, 2, "30 X 60 cm", "22,000 per page",R.drawable._30x60));
+            boxSizes.add(new ImageSize(1, 3, "30 X 90 cm", "26,000 per page",R.drawable._30x90));
+            boxSizes.add(new ImageSize(1, 1.5f, "40 X 60 cm", "36,000 per page",R.drawable._40x60));
+            boxSizes.add(new ImageSize(1, 1.5f, "50 X 75 cm", "45,000 per page",R.drawable._50x75));
+            boxSizes.add(new ImageSize(1, 1.5f, "60 X 90 cm", "60,000 per page",R.drawable._60x90));
 
-            file_maps.put("description1",R.drawable.bigimage1);
-            file_maps.put("description2",R.drawable.bigimage2);
-            file_maps.put("description3",R.drawable.bigimage3);
-            file_maps.put("description4", R.drawable.bigimage4);
-            file_maps.put("description5", R.drawable.bigimage5);
-            file_maps.put("description6", R.drawable.bigimage6);
-            file_maps.put("description7", R.drawable.bigimage7);
+            file_maps.put("1",R.drawable.bigimage1);
+            file_maps.put("2",R.drawable.bigimage2);
+            file_maps.put("3",R.drawable.bigimage3);
+            file_maps.put("4", R.drawable.bigimage4);
+            file_maps.put("5", R.drawable.bigimage5);
+            file_maps.put("6", R.drawable.bigimage6);
+            file_maps.put("7", R.drawable.bigimage7);
 
         }
         ListView list = findViewById(R.id.box_size_listview);
@@ -72,6 +82,7 @@ public class PhotoPrintSize extends AppCompatActivity {
                 Intent i = new Intent(PhotoPrintSize.this, ChoosePhoto.class);
                 i.putExtra("h",boxSizes.get(position).h);
                 i.putExtra("w",boxSizes.get(position).w);
+                i.putExtra("size",boxSizes.get(position).title);
                 startActivity(i);
             }
         });
@@ -100,17 +111,34 @@ public class PhotoPrintSize extends AppCompatActivity {
         mDemoSlider.setCustomAnimation(new DescriptionAnimation());
         mDemoSlider.setDuration(4000);
     }
+    private void toolbarSetup(String title) {
+        Toolbar toolbar = findViewById(R.id.order_toolbar);
+        toolbar.setTitle(title);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
     public class ImageSize {
         public float h;
         public float w;
         public String title;
         public String desc;
-        public ImageSize(float h, float w, String title, String desc) {
+        public int image;
+        public ImageSize(float h, float w, String title, String desc, int image) {
             this.h = h;
             this.w = w;
             this.title = title;
             this.desc = desc;
+            this.image = image;
         }
     }
     public class BoxSizesAdapter extends ArrayAdapter<ImageSize> {
@@ -121,17 +149,19 @@ public class PhotoPrintSize extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // Get the data item for this position
-            ImageSize user = getItem(position);
+            ImageSize box = getItem(position);
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_box_size, parent, false);
             }
             // Lookup view for data population
-            TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-            TextView tvDesc = (TextView) convertView.findViewById(R.id.tvDesc);
-            // Populate the data into the template view using the data object
-            tvTitle.setText(user.title);
-            tvDesc.setText(user.desc);
+//            TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+//            TextView tvDesc = (TextView) convertView.findViewById(R.id.tvDesc);
+//            // Populate the data into the template view using the data object
+//            tvTitle.setText(user.title);
+//            tvDesc.setText(user.desc);
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+            imageView.setImageResource(box.image);
             // Return the completed view to render on screen
             return convertView;
         }

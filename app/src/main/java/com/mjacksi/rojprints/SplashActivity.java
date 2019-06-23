@@ -6,6 +6,8 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import io.realm.Realm;
+
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -14,7 +16,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        Realm.init(this);
 //        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -2,6 +2,7 @@ package com.mjacksi.rojprints.PhotoPrint;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -11,6 +12,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -33,20 +36,21 @@ public class ChoosePhoto extends AppCompatActivity {
     final int SINGLE_IMAGE_PICKER_REQ_CODE = 200;
     final String SAMPLE_CROPPED_IMAGE_NAME = "uCrop";
 
-    float w,h;
+    float w, h;
     boolean ratioChanged = false;
     Image image;
     ImageView imageView;
     CardView frameLayout;
     ConstraintLayout constraintLayout;
     ConstraintSet set;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_photo);
 
         imageView = findViewById(R.id.single_image_view);
-        frameLayout= findViewById(R.id.card);
+        frameLayout = findViewById(R.id.card);
         constraintLayout = findViewById(R.id.constratin_single_image);
         set = new ConstraintSet();
 
@@ -64,7 +68,7 @@ public class ChoosePhoto extends AppCompatActivity {
                         dialog.dismiss();
                         if (item == 0) {
                             startPickPicture();
-                        }else if(item == 1){
+                        } else if (item == 1) {
                             startCrop();
                         }
                     }
@@ -73,24 +77,46 @@ public class ChoosePhoto extends AppCompatActivity {
         });
 
 
-        h = getIntent().getFloatExtra("h",1);
-        w = getIntent().getFloatExtra("w",1);
+        h = getIntent().getFloatExtra("h", 1);
+        w = getIntent().getFloatExtra("w", 1);
 
         set.clone(constraintLayout);
-        set.setDimensionRatio(frameLayout.getId(),String.format( "H,%f:%f",w,h));
+        set.setDimensionRatio(frameLayout.getId(), String.format("H,%f:%f", w, h));
         set.applyTo(constraintLayout);
 
         startPickPicture();
+        String title = getIntent().getExtras().getString("size");
+        toolbarSetup(title);
+    }
+
+    private void toolbarSetup(String title) {
+        Toolbar toolbar = findViewById(R.id.order_toolbar);
+        toolbar.setTitle(title);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void startCrop() {
         Uri uri = Uri.fromFile(new File(image.getPath()));
         String shortId = RandomStringUtils.randomAlphanumeric(4);
-        File tempCropped = new File(getCacheDir(), shortId+image.getName());
+        File tempCropped = new File(getCacheDir(), shortId + image.getName());
         Uri destinationUri = Uri.fromFile(tempCropped);
-        UCrop uCrop = UCrop.of(uri,destinationUri);
-        uCrop.withAspectRatio(w,h)
-                .start(ChoosePhoto.this);
+        UCrop uCrop = UCrop.of(uri, destinationUri);
+        if (ratioChanged) {
+            uCrop.withAspectRatio(h, w);
+        }else{
+            uCrop.withAspectRatio(w, h);
+        }
+        uCrop.start(ChoosePhoto.this);
     }
 
     void startPickPicture() {
@@ -120,8 +146,8 @@ public class ChoosePhoto extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == SINGLE_IMAGE_PICKER_REQ_CODE && resultCode == RESULT_OK && data != null){
-            image = (Image)data.getParcelableArrayListExtra(Config.EXTRA_IMAGES).get(0);
+        if (requestCode == SINGLE_IMAGE_PICKER_REQ_CODE && resultCode == RESULT_OK && data != null) {
+            image = (Image) data.getParcelableArrayListExtra(Config.EXTRA_IMAGES).get(0);
             startCrop();
             updateUi();
         }
@@ -129,7 +155,7 @@ public class ChoosePhoto extends AppCompatActivity {
         // uCrop
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             final Uri resultUri = UCrop.getOutput(data);
-            image.setPath(resultUri.toString().replace("file://",""));
+            image.setPath(resultUri.toString().replace("file://", ""));
             updateUi();
         } else if (resultCode == UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);
@@ -148,11 +174,33 @@ public class ChoosePhoto extends AppCompatActivity {
 
     public void changeRatio(View view) {
         set.clone(constraintLayout);
-        if(ratioChanged)
+        if (ratioChanged)
             set.setDimensionRatio(frameLayout.getId(), String.format("W,%f:%f", h, w));
         else
             set.setDimensionRatio(frameLayout.getId(), String.format("H,%f:%f", h, w));
         set.applyTo(constraintLayout);
         ratioChanged = !ratioChanged;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.album_menu, menu);
+        MenuItem item = menu.findItem(R.id.save_album);
+        item.setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.add_to_cart_album) {
+            addToCart();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void addToCart() {
     }
 }
