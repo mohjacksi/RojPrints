@@ -80,7 +80,7 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
         }
 
 
-        toolbarSetup();
+        toolbarSetup(title);
         if (title.equals("15 X 20 cm"))
             ratio[1] = 1.3f;
         imageAdapter = new ImageAdapter(this, albumSize, SimpleAlbumImagesListActivity.this, ratio);
@@ -146,7 +146,7 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
 
     }
 
-    private void toolbarSetup() {
+    private void toolbarSetup(String title) {
         Toolbar toolbar = findViewById(R.id.order_toolbar);
         toolbar.setTitle(title);
         setSupportActionBar(toolbar);
@@ -220,9 +220,7 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
         // uCrop
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             final Uri resultUri = UCrop.getOutput(data);
-            Log.d(TAG, "onActivityResult: " + images.get(pos_image_changed).getPath());
             images.get(pos_image_changed).setPath(resultUri.toString().replace("file://", ""));
-            Log.d(TAG, "AAA save to: " + resultUri.toString().replace("file://", ""));
 
             imageAdapter.setData(images);
         } else if (resultCode == UCrop.RESULT_ERROR) {
@@ -237,11 +235,11 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
     }
 
     public void editImageAt(final int position) {
-        final CharSequence[] items = {"change image", "Crop & rotate"};
-        //"Write on image", "Filters",
+        final CharSequence[] items = {getString(R.string.change_image), getString(R.string.crop_and_rotate)};
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(SimpleAlbumImagesListActivity.this);
-        builder.setTitle("Chose an action:");
+        builder.setTitle(getString(R.string.chose_action));
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 Toast.makeText(SimpleAlbumImagesListActivity.this, "Name: " + items[item], Toast.LENGTH_SHORT).show();
@@ -250,10 +248,7 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
                 if (item == 0) {
                     startPickPictures("single");
                 } else if (item == 1) {
-                    Log.d(TAG, "AAA crop: " + images.get(position).getPath());
-                    Log.d(TAG, "AAA id: " + images.get(position).getId());
                     Uri uri = Uri.fromFile(new File(images.get(position).getPath()));
-
                     String shortId = RandomStringUtils.randomAlphanumeric(4);
                     File tempCropped = new File(getCacheDir(), shortId + images.get(position).getName());
                     Uri destinationUri = Uri.fromFile(tempCropped);
@@ -289,15 +284,15 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.add_to_cart_album) {
             if (images.size() < 14) {
-                Toast.makeText(this, "Album should have 14 images at lest", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.min_images_number_14), Toast.LENGTH_SHORT).show();
                 return true;
             } else if (images.size() % 2 == 0) {
-                Toast.makeText(this, "Album should have even number of images", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.images_number_should_even), Toast.LENGTH_SHORT).show();
                 return true;
             }
             addToCart();
             return true;
-        } else if(id == R.id.delete_album){
+        } else if (id == R.id.delete_album) {
             deleteAlbum();
         }
         return super.onOptionsItemSelected(item);
@@ -339,7 +334,25 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
     }
 
     private void addToCart() {
-        Toast.makeText(this, "order", Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(this, getString(R.string.added_to_cart), Toast.LENGTH_SHORT).show();
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Project project;
+        if (isEditMode) {
+            project = realm.where(Project.class).equalTo("id", id).findFirst();
+            project.setImages(images);
+        } else {
+            String _id = UUID.randomUUID().toString();
+            project = realm.createObject(Project.class, _id);
+            project.setImages(images);
+            project.setPricePerPage(pricePrePage);
+            project.setSize(title);
+            project.setType("album");
+            project.setDate(Utilises.getCurrentTime());
+        }
+        project.setInCart(true);
+        realm.commitTransaction();
+        realm.close();
+        finish();
     }
 }

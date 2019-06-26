@@ -46,7 +46,6 @@ public class ShopFragment extends Fragment {
         simpleAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "simple album", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getContext(), SimpleAlbumBoxSize.class);
                 startActivity(i);
             }
@@ -54,7 +53,6 @@ public class ShopFragment extends Fragment {
         photoPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "photo print", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getContext(), PhotoPrintSize.class);
                 i.putExtra("type","photo_print");
                 startActivity(i);
@@ -63,7 +61,6 @@ public class ShopFragment extends Fragment {
         homeDecor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "home decor", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getContext(), PhotoPrintSize.class);
                 i.putExtra("type","home_decor");
                 startActivity(i);

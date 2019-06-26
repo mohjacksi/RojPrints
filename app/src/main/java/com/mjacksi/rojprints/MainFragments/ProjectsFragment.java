@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -23,11 +22,8 @@ import com.mjacksi.rojprints.RealmObjects.Project;
 import com.mjacksi.rojprints.SimpleAlbum.SimpleAlbumImagesListActivity;
 import com.mjacksi.rojprints.Utilises.Utilises;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.OrderedCollectionChangeSet;
-import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -49,7 +45,7 @@ public class ProjectsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
         Realm realm = Realm.getDefaultInstance();
-        final RealmResults<Project> projects = realm.where(Project.class).findAll();
+        final RealmResults<Project> projects = realm.where(Project.class).equalTo("isInCart",false).findAll();
 
         final ListView list = view.findViewById(R.id.project_listview);
         adapter = new ProjectAdapter(getContext(),projects);
@@ -89,7 +85,7 @@ public class ProjectsFragment extends Fragment {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_project, parent, false);
             }
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.project_image);
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.setting_icon);
             Glide.with(getContext())
                     .load(projectCover.getPath())
                     .apply(new RequestOptions().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder))

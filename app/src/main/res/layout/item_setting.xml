@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/setting_icon"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -44,32 +44,18 @@
                 <TextView
                     android:id="@+id/settings_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:text="Album name"
                     android:textColor="#4527A0"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/project_size"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="12dp"
-                    android:text="15 x 15 cm"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/project_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="2019-06-01"
-                    android:textSize="12sp" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="50dp"
-                android:layout_height="100dp"
+                android:layout_height="50dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

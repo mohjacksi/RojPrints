@@ -24,6 +24,8 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.mjacksi.rojprints.R;
 import com.mjacksi.rojprints.SimpleAlbum.SimpleAlbumImagesListActivity;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -40,15 +42,15 @@ public class PhotoPrintSize extends AppCompatActivity {
 
 
         if(getIntent().getStringExtra("type").equals("photo_print")) {
-            toolbarSetup("Photo print");
-            boxSizes.add(new ImageSize(1, 1.5f, "10 X 15 cm", "2,500 per page",R.drawable.photo_print_10x15));
-            boxSizes.add(new ImageSize(1, 1.14f, "15 X 21 cm", "4,000 per page",R.drawable.photo_print_15x21));
-            boxSizes.add(new ImageSize(1, 1.38f, "13 X 18 cm", "3,000 per page",R.drawable.photo_print_13x18));
-            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "3000 per page",R.drawable.photos4));
-            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "3000 per page",R.drawable.photos6));
-            boxSizes.add(new ImageSize(1, 1, "5 X 5 cm", "3000 per page",R.drawable.photos6_5x5));
-            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "3000 per page",R.drawable.photos6));
-            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "3000 per page",R.drawable.photos8));
+            toolbarSetup(getString(R.string.photo_print_titile));
+            boxSizes.add(new ImageSize(1, 1.5f, "10 X 15 cm", "2,500 per page",R.drawable.photo_print_10x15,2500));
+            boxSizes.add(new ImageSize(1, 1.14f, "15 X 21 cm", "4,000 per page",R.drawable.photo_print_15x21,4000));
+            boxSizes.add(new ImageSize(1, 1.38f, "13 X 18 cm", "3,000 per page",R.drawable.photo_print_13x18,3000));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "300 per page",R.drawable.photos4,300));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "300 per page",R.drawable.photos6,300));
+            boxSizes.add(new ImageSize(1, 1, "5 X 5 cm", "300 per page",R.drawable.photos6_5x5,300));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "300 per page",R.drawable.photos6,300));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "300 per page",R.drawable.photos8,300));
             file_maps.put("1",R.drawable.photo_print1);
             file_maps.put("2",R.drawable.photo_print2);
             file_maps.put("3",R.drawable.photo_print3);
@@ -56,14 +58,16 @@ public class PhotoPrintSize extends AppCompatActivity {
             file_maps.put("5",R.drawable.photo_print5);
 
         }else{
-            toolbarSetup("Home decor");
-            boxSizes.add(new ImageSize(1, 1.5f, "20 X 30 cm", "8,000 per page",R.drawable._20x30));
-            boxSizes.add(new ImageSize(1, 1.5f, "30 X 45 cm", "15,000 per page",R.drawable._30x45));
-            boxSizes.add(new ImageSize(1, 2, "30 X 60 cm", "22,000 per page",R.drawable._30x60));
-            boxSizes.add(new ImageSize(1, 3, "30 X 90 cm", "26,000 per page",R.drawable._30x90));
-            boxSizes.add(new ImageSize(1, 1.5f, "40 X 60 cm", "36,000 per page",R.drawable._40x60));
-            boxSizes.add(new ImageSize(1, 1.5f, "50 X 75 cm", "45,000 per page",R.drawable._50x75));
-            boxSizes.add(new ImageSize(1, 1.5f, "60 X 90 cm", "60,000 per page",R.drawable._60x90));
+            TextView description = findViewById(R.id.description);
+            description.setText(getString(R.string.home_decor_desc));
+            toolbarSetup(getString(R.string.hode_decor_title));
+            boxSizes.add(new ImageSize(1, 1.5f, "20 X 30 cm", "8,000 per page",R.drawable._20x30,8000));
+            boxSizes.add(new ImageSize(1, 1.5f, "30 X 45 cm", "15,000 per page",R.drawable._30x45,15000));
+            boxSizes.add(new ImageSize(1, 2, "30 X 60 cm", "22,000 per page",R.drawable._30x60,22000));
+            boxSizes.add(new ImageSize(1, 3, "30 X 90 cm", "26,000 per page",R.drawable._30x90,26000));
+            boxSizes.add(new ImageSize(1, 1.5f, "40 X 60 cm", "36,000 per page",R.drawable._40x60,36000));
+            boxSizes.add(new ImageSize(1, 1.5f, "50 X 75 cm", "45,000 per page",R.drawable._50x75,45000));
+            boxSizes.add(new ImageSize(1, 1.5f, "60 X 90 cm", "60,000 per page",R.drawable._60x90,6000));
 
             file_maps.put("1",R.drawable.bigimage1);
             file_maps.put("2",R.drawable.bigimage2);
@@ -82,7 +86,8 @@ public class PhotoPrintSize extends AppCompatActivity {
                 Intent i = new Intent(PhotoPrintSize.this, ChoosePhoto.class);
                 i.putExtra("h",boxSizes.get(position).h);
                 i.putExtra("w",boxSizes.get(position).w);
-                i.putExtra("size",boxSizes.get(position).title);
+                i.putExtra("title",boxSizes.get(position).title);
+                i.putExtra("price",boxSizes.get(position).price);
                 startActivity(i);
             }
         });
@@ -133,12 +138,23 @@ public class PhotoPrintSize extends AppCompatActivity {
         public String title;
         public String desc;
         public int image;
-        public ImageSize(float h, float w, String title, String desc, int image) {
+        public int price;
+
+        public int getPrice() {
+            return price;
+        }
+
+        public void setPrice(int price) {
+            this.price = price;
+        }
+
+        public ImageSize(float h, float w, String title, String desc, int image, int price) {
             this.h = h;
             this.w = w;
             this.title = title;
             this.desc = desc;
             this.image = image;
+            this.price = price;
         }
     }
     public class BoxSizesAdapter extends ArrayAdapter<ImageSize> {
@@ -162,6 +178,8 @@ public class PhotoPrintSize extends AppCompatActivity {
 //            tvDesc.setText(user.desc);
             ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
             imageView.setImageResource(box.image);
+            TextView textView = (TextView) convertView.findViewById(R.id.price);
+            textView.setText(box.desc);
             // Return the completed view to render on screen
             return convertView;
         }

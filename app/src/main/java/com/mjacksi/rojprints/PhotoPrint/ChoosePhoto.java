@@ -22,7 +22,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.mjacksi.rojprints.R;
+import com.mjacksi.rojprints.RealmObjects.Project;
 import com.mjacksi.rojprints.SimpleAlbum.SimpleAlbumImagesListActivity;
+import com.mjacksi.rojprints.Utilises.Utilises;
 import com.nguyenhoanglam.imagepicker.model.Config;
 import com.nguyenhoanglam.imagepicker.model.Image;
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
@@ -31,6 +33,9 @@ import com.yalantis.ucrop.UCrop;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.File;
+import java.util.UUID;
+
+import io.realm.Realm;
 
 public class ChoosePhoto extends AppCompatActivity {
     final int SINGLE_IMAGE_PICKER_REQ_CODE = 200;
@@ -43,12 +48,14 @@ public class ChoosePhoto extends AppCompatActivity {
     CardView frameLayout;
     ConstraintLayout constraintLayout;
     ConstraintSet set;
-
+    int price;
+    String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_photo);
-
+        price = getIntent().getExtras().getInt("price");
+        title = getIntent().getExtras().getString("title");
         imageView = findViewById(R.id.single_image_view);
         frameLayout = findViewById(R.id.card);
         constraintLayout = findViewById(R.id.constratin_single_image);
@@ -57,14 +64,14 @@ public class ChoosePhoto extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] items = {"change image", "Crop & rotate"};
+                final CharSequence[] items = {getString(R.string.change_image), getString(R.string.crop_and_rotate)};
                 //"Write on image", "Filters",
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ChoosePhoto.this);
-                builder.setTitle("Chose an action:");
+                builder.setTitle(getString(R.string.chose_action));
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        Toast.makeText(ChoosePhoto.this, "Name: " + items[item], Toast.LENGTH_SHORT).show();
+
                         dialog.dismiss();
                         if (item == 0) {
                             startPickPicture();
@@ -85,7 +92,6 @@ public class ChoosePhoto extends AppCompatActivity {
         set.applyTo(constraintLayout);
 
         startPickPicture();
-        String title = getIntent().getExtras().getString("size");
         toolbarSetup(title);
     }
 
@@ -113,7 +119,7 @@ public class ChoosePhoto extends AppCompatActivity {
         UCrop uCrop = UCrop.of(uri, destinationUri);
         if (ratioChanged) {
             uCrop.withAspectRatio(h, w);
-        }else{
+        } else {
             uCrop.withAspectRatio(w, h);
         }
         uCrop.start(ChoosePhoto.this);
@@ -135,7 +141,7 @@ public class ChoosePhoto extends AppCompatActivity {
                 .setFolderTitle("Albums")           //  Folder title (works with FolderMode = true)
                 .setImageTitle("Galleries")         //  Image title (works with FolderMode = false)
                 .setDoneTitle("Done")               //  Done button title
-                .setLimitMessage("14 images is max")// Selection limit message
+                .setLimitMessage(getString(R.string._14_images_max))// Selection limit message
                 .setSavePath("ImagePicker")         //  Image capture folder name
                 .setAlwaysShowDoneButton(true)      //  Set always show done button in multiple mode
                 .setRequestCode(SINGLE_IMAGE_PICKER_REQ_CODE)            //  Set request code, default Config.RC_PICK_IMAGES
@@ -202,5 +208,19 @@ public class ChoosePhoto extends AppCompatActivity {
     }
 
     private void addToCart() {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Project project;
+        String _id = UUID.randomUUID().toString();
+        project = realm.createObject(Project.class, _id);
+        project.setImages(image);
+        project.setPricePerPage(price);
+        project.setSize(title);
+        project.setType("photo");
+        project.setDate(Utilises.getCurrentTime());
+        project.setInCart(true);
+        realm.commitTransaction();
+        realm.close();
+        finish();
     }
 }

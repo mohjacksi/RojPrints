@@ -13,9 +13,12 @@ public class Project extends RealmObject {
     private String id;
     RealmList<ImageRealm> images = new RealmList<>();
     int pricePerPage;
-    long totalPrice;
+
     long date;
     String size;
+    String type;
+    int countAtCart = 1;
+    boolean isInCart = false;
 
     public String getSize() {
         return size;
@@ -25,8 +28,8 @@ public class Project extends RealmObject {
         this.size = size;
     }
 
-    long getTotalPrice() {
-        return images.size() * pricePerPage;
+    public int getTotalPrice() {
+        return images.size() * pricePerPage * countAtCart;
     }
 
     public Project() {
@@ -35,7 +38,7 @@ public class Project extends RealmObject {
     public Project(ArrayList<Image> images, int pricePerPage) {
 
         for (Image image : images) {
-            this.images.add(new ImageRealm(image.getId(), image.getName(), image.getPath()));
+            this.images.add(new ImageRealm(image.getName(), image.getPath()));
         }
 
         this.pricePerPage = pricePerPage;
@@ -57,8 +60,13 @@ public class Project extends RealmObject {
     public void setImages(ArrayList<Image> images) {
         this.images.clear();
         for (Image image : images) {
-            this.images.add(new ImageRealm(image.getId(), image.getName(), image.getPath()));
+            this.images.add(new ImageRealm(image.getName(), image.getPath()));
         }
+    }
+
+    public void setImages(Image image) {
+        this.images.clear();
+        this.images.add(new ImageRealm(image.getName(), image.getPath()));
     }
 
     public int getPricePerPage() {
@@ -69,9 +77,7 @@ public class Project extends RealmObject {
         this.pricePerPage = pricePerPage;
     }
 
-    public void setTotalPrice(long totalPrice) {
-        this.totalPrice = totalPrice;
-    }
+
 
     public long getDate() {
         return date;
@@ -81,11 +87,46 @@ public class Project extends RealmObject {
         this.date = date;
     }
 
-    public ArrayList<Image> getImagesAsImageObject(){
+    public ArrayList<Image> getImagesAsImageObject() {
         ArrayList<Image> images = new ArrayList<>();
-        for (ImageRealm imageRealm: this.images){
-            images.add(new Image(imageRealm.getId(),imageRealm.getName(),imageRealm.getPath()));
+        for (ImageRealm imageRealm : this.images) {
+            images.add(new Image(imageRealm.getId(), imageRealm.getName(), imageRealm.getPath()));
         }
         return images;
+    }
+
+    public boolean isInCart() {
+        return isInCart;
+    }
+
+    public void setInCart(boolean inCart) {
+        isInCart = inCart;
+    }
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getCountAtCart() {
+        return countAtCart;
+    }
+
+    public void setCountAtCart(int countAtCart) {
+        this.countAtCart = countAtCart;
+    }
+
+    public int increaseCount(){
+        countAtCart += 1;
+        return countAtCart;
+    }
+
+    public int decreaseCount(){
+        if(countAtCart > 1){
+            countAtCart = countAtCart-1;
+        }
+        return countAtCart;
     }
 }

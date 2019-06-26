@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Roj Prints</string>
+    <string name="title_shop">بازار كرن</string>
+    <string name="title_projects">پروژه‌</string>
+    <string name="title_settings">راستڤه‌كرن</string>
+    <string name="simple_album">ئه‌لبوم</string>
+    <string name="photo_print">چاپكرنا وێنا</string>
+    <string name="about_us">"سه‌باره‌ت روژ پرینت  "</string>
+    <string name="about">"سه‌باره‌ت روژ پرینت  "</string>
+    <string name="language">زمان</string>
+    <string name="photo_print_titile">چاپكرنا وێنا</string>
+    <string name="rojprint_projects">پروژه‌</string>
+    <string name="rojprint_settings">راستڤه‌كرن</string>
+    <string name="rojprint_shop">بازار كرن</string>
+    <string name="call_us">په‌یوه‌ندی</string>
+    <string name="simple_album_desc">جوانترین وێنا هه‌لبژیره‌ بكه‌ ئه‌لبومه‌كا چاپكری بشێوێ پانورامیك بكوالتیه‌كا به‌رز</string>
+    <string name="photo_print_description">خوشترین بیرهاتنێت خو چاپ بكه ب هه‌می جور و قه‌بارا ژ بو كو ده‌مه‌كێ دریژتر دگه‌ ل وه‌ دا بمینن</string>
+    <string name="hode_decor_title">مه‌زنكرنا وێنا</string>
+    <string name="home_decor">مه‌زنكرنا وێنا</string>
+    <string name="home_decor_desc">مالا خو بخه‌ملینه‌ ب جوانترین وێنێت خو یان خوشتڤیێت خو ب هه‌می قه‌بارا وكوالتیه‌كا به‌رز  وێنه‌ لسه‌ر داری كه‌بس كری ئاماده‌ بو هه‌لاویستنێ</string>
+    <string name="phone_number">Phone number</string>
+    <string name="will_call_you">تێبینی: دێ په‌یوه‌ندی بته‌ هیته‌ كرن د ماوی 6 كاتژمێریت دا هاتی دا پشتی په‌سه‌ند كرنێ</string>
+    <string name="address">"ناڤونیشان "</string>
+    <string name="chose_a_city">"ناڤێ باژێری هه‌لبژیره:‌  "</string>
+    <string name="contact_us">"په‌یوه‌ندی  "</string>
+    <string name="delivery">"گه‌هاندن  "</string>
+    <string name="name">ناڤ</string>
+    <string name="notes">تێبینی</string>
+    <string name="total">سه‌رجه‌مێ گشتى:</string>
+    <string name="send">په‌سه‌ند</string>
+
+    <string name="city_prompt">اختر المدينة</string>
+    <string-array name="cities">
+        <item>دهۆک</item>
+        <item>زاخۆ</item>
+        <item>ئاکرێ</item>
+        <item>ھەولێر</item>
+        <item>سلێمانی</item>
+        <item>هه‌ڵه‌بجه</item>
+    </string-array>
+</resources>

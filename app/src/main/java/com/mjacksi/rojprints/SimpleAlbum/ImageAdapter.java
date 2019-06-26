@@ -78,7 +78,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         });
 
         if(position == 0)
-            holder.sequence.setText("The cover of your album");
+            holder.sequence.setText(context.getString(R.string.cover_image_description));
         else
             holder.sequence.setText(String.valueOf(position));
 

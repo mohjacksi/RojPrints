@@ -41,11 +41,7 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(SimpleAlbumBoxSize.this,
-                        "title " + boxSizes.get(position).size
-                        , Toast.LENGTH_SHORT).show();
 
-                // Todo:
                 Intent i = new Intent(SimpleAlbumBoxSize.this,SimpleAlbumImagesListActivity.class);
                 i.putExtra("title",boxSizes.get(position).title);
                 i.putExtra("price_per_page",boxSizes.get(position).pricePrePage);
@@ -88,7 +84,7 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
     }
     private void toolbarSetup() {
         Toolbar toolbar = findViewById(R.id.order_toolbar);
-        toolbar.setTitle("New Album");
+        toolbar.setTitle(getString(R.string.new_album));
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -137,6 +133,9 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
 
             ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
             imageView.setImageResource(box.image);
+            TextView textView = (TextView) convertView.findViewById(R.id.price);
+            textView.setText(box.desc);
+
             // Return the completed view to render on screen
             return convertView;
         }

@@ -1,13 +1,62 @@
 <resources>
     <string name="app_name">Roj Prints</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="title_shop">Shop</string>
     <string name="title_projects">Projects</string>
     <string name="title_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="simple_album_desc">Doubtful two bed way pleasure confined followed. Shew up ye away no eyes life or were this. Perfectly did suspicion daughters but his intention. Started on society an brought it explain. Position two saw greatest stronger old. Pianoforte if at simplicity do estimating.</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="chose_language">Chose language:</string>
+    <string name="call_us">Call us</string>
+    <string name="language">Language</string>
+    <string name="about">About</string>
+    <string name="contact_us">Contact us</string>
+    <string name="rate_us">Rate us</string>
+    <string name="our_address">Our address location</string>
+    <string name="change_image">change image</string>
+    <string name="crop_and_rotate">crop and rotate</string>
+    <string name="chose_action">Chose an action:</string>
+    <string name="_14_images_max">20 images is max</string>
+    <string name="photo_print_titile">Photo print</string>
+    <string name="hode_decor_title">Home decor</string>
+    <string name="about_us">About us</string>
+    <string name="our_adress">Our address location</string>
+    <string name="cover_image_description">The cover of your album</string>
+    <string name="new_album">New Album</string>
+    <string name="min_images_number_14">Min images number 14</string>
+    <string name="images_number_should_even">Images number should be even</string>
+    <string name="added_to_cart">added to the cart</string>
+    <string name="rojprint_shop">RojPrint-Shop</string>
+    <string name="rojprint_projects">RojPrint-Projects</string>
+    <string name="rojprint_settings">RojPrint-Setting</string>
+    <string name="change_ratio">Reflect ratio</string>
+    <string name="photo_print_description">Turn your memories into a printed image, in order to stay with you for a longer time</string>
+    <string name="simple_album">Simple Album</string>
+    <string name="photo_print">Photo Print</string>
+    <string name="home_decor">Home Decor</string>
+    <string name="simple_album_desc">Choose your favorite photos and make them photo albums in different sizes and in high resolution</string>
+    <string name="home_decor_desc">Decorate your home with your pictures or your friends with different sizes and a high wooden pack that is ready to hang</string>
+
+
+    <string name="phone_number">Phone number</string>
+    <string name="will_call_you">Note: You will be contacted within the next 6 hours</string>
+    <string name="order_informations">Order informations</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="chose_a_city">Chose a city:</string>
+    <string name="send_as_gift">Send as gift</string>
+    <string name="delivery">Delivery</string>
+    <string name="notes">Notes</string>
+    <string name="total">Total:</string>
+    <string name="send">Send</string>
+
+    <string name="city_prompt">Choose a city</string>
+    <string-array name="cities">
+        <item>Duhok</item>
+        <item>Zakho</item>
+        <item>Akre</item>
+        <item>Erbil</item>
+        <item>Sulaymaniyah</item>
+        <item>Halabja</item>
+    </string-array>
 </resources>

@@ -2,6 +2,8 @@ package com.mjacksi.rojprints.RealmObjects;
 
 import com.nguyenhoanglam.imagepicker.model.Image;
 
+import java.util.UUID;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,8 +16,8 @@ public class ImageRealm extends RealmObject {
 
     public ImageRealm(){}
 
-    public ImageRealm(long id, String name, String path) {
-        this.id = id;
+    public ImageRealm(String name, String path) {
+        this.id  = generateUniqueId();
         this.name = name;
         this.path = path;
     }
@@ -46,5 +48,13 @@ public class ImageRealm extends RealmObject {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    private Long generateUniqueId() {
+        long val = -1;
+        do {
+            val = UUID.randomUUID().getMostSignificantBits();
+        } while (val < 0);
+        return val;
     }
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Roj Prints</string>
+    <string name="title_shop">التسوق</string>
+    <string name="title_projects">مشروع</string>
+    <string name="title_settings">الضبط</string>
+    <string name="chose_language">اختر اللغة:</string>
+    <string name="simple_album">البومات صور</string>
+    <string name="photo_print">طباعة صورة</string>
+    <string name="about">"عن روژ برينت "</string>
+    <string name="about_us">"عن روژ برينت "</string>
+    <string name="crop_and_rotate">قص وتدوير</string>
+    <string name="home_decor">تكبير الصور</string>
+    <string name="hode_decor_title">تكبير الصور</string>
+    <string name="language">اللغة</string>
+    <string name="new_album">البوم جديد</string>
+    <string name="rate_us">قيمنا</string>
+    <string name="photo_print_titile">طباعة صورة</string>
+    <string name="rojprint_projects">مشروع</string>
+    <string name="rojprint_settings">الضبط</string>
+    <string name="rojprint_shop">التسوق</string>
+    <string name="title_activity_map">موقعنا الجغرافي</string>
+    <string name="call_us">اتصل بنا</string>
+    <string name="change_image">تغيير الصورة</string>
+    <string name="change_ratio">عكس الابعاد</string>
+    <string name="_14_images_max">20 عدد الصور الاقصى</string>
+    <string name="added_to_cart">تم الاضافة للسلة</string>
+    <string name="chose_action">اختر العملية:</string>
+    <string name="contact_us">اتصل بنا</string>
+    <string name="cover_image_description">غلاف الالبوم</string>
+    <string name="images_number_should_even">عدد الصور يجب ان يكون زوجي</string>
+    <string name="min_images_number_14">14 اقل عدد لكل البوم</string>
+    <string name="our_address">موقعنا الجغرافي</string>
+    <string name="our_adress">موقعنا الجغرافي</string>
+    <string name="simple_album_desc">اختار صورك المفضلة واجعلها البوم مطبوعة بشكل بانورامية بمختلف الأحجام و بدقة عالية</string>
+    <string name="photo_print_description">حول ذكرياتك الى صورة مطبوعة لكي يبقى عندكم لزمنن اطول</string>
+    <string name="home_decor_desc">زيين بيتك بصورك او اعزائك بلأحجام مختلفةودقة عالية مكبوسة على الخشب جاهزة للتعليق</string>
+    <string name="phone_number">Phone number</string>
+    <string name="will_call_you">Note: Yoملاحظة: سيتم الاتصال بك خلال 6 ساعات القادمة u will be contacted within the next 6 hours</string>
+    <string name="address">العنوان</string>
+    <string name="chose_a_city">اختار مدينتك:</string>
+    <string name="delivery">توصيل</string>
+    <string name="name">الاسم</string>
+    <string name="notes">ملاحظات</string>
+    <string name="total">السعر الكلي:</string>
+    <string name="send">تاكيد الطلب</string>
+
+
+    <string name="city_prompt">اختر المدينة</string>
+    <string-array name="cities">
+        <item>دهوك</item>
+        <item>زاخو</item>
+        <item>اكرى</item>
+        <item>اربيل</item>
+        <item>سليمانية</item>
+        <item>حلبجة</item>
+    </string-array>
+</resources>
