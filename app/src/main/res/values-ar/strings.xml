@@ -55,4 +55,5 @@
         <item>سليمانية</item>
         <item>حلبجة</item>
     </string-array>
+    <string name="please_fill_all">يرجى ادخال جميع المعلومات</string>
 </resources>

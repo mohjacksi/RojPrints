@@ -61,7 +61,7 @@
                     app:srcCompat="@drawable/phone" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/order_phone_number"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -102,6 +102,7 @@
                     app:srcCompat="@drawable/card" />
 
                 <EditText
+                    android:id="@+id/order_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -124,6 +125,7 @@
                     app:srcCompat="@drawable/home" />
 
                 <EditText
+                    android:id="@+id/order_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -156,7 +158,7 @@
                     android:text="@string/chose_a_city" />
 
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/order_city"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:entries="@array/cities"
@@ -193,7 +195,7 @@
                     android:inputType="textPersonName" />
 
                 <Switch
-                    android:id="@+id/gift_switch"
+                    android:id="@+id/order_gift_switch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -232,7 +234,7 @@
                     android:inputType="textPersonName" />
 
                 <Switch
-                    android:id="@+id/delivery_switch"
+                    android:id="@+id/order_delivery_switch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -266,7 +268,7 @@
                     app:srcCompat="@drawable/notes" />
 
                 <EditText
-                    android:id="@+id/notes"
+                    android:id="@+id/order_notes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/notes"
@@ -300,7 +302,7 @@
                     app:srcCompat="@drawable/price" />
 
                 <TextView
-                    android:id="@+id/total_order"
+                    android:id="@+id/order_total"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -325,6 +327,7 @@
                 android:background="@color/background_color"
                 android:text="@string/send"
                 android:textColor="@android:color/white"
+                android:onClick="order"
                 android:textSize="24sp" />
 
         </LinearLayout>

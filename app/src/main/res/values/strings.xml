@@ -51,6 +51,7 @@
     <string name="send">Send</string>
 
     <string name="city_prompt">Choose a city</string>
+    <string name="please_fill_all">Please enter all information</string>
     <string-array name="cities">
         <item>Duhok</item>
         <item>Zakho</item>
