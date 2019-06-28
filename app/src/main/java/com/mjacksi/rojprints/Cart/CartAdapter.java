@@ -1,6 +1,7 @@
 package com.mjacksi.rojprints.Cart;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         final Project project = projects.get(position);
 
         Glide.with(context)
-                .load(project.getImages().get(0).getPath())
+                .load(project.getImages().get(0).getOriginalPath())
                 .apply(new RequestOptions().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                 .into(holder.image);
 
@@ -60,7 +61,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notifyItemRemoved(position);
+                Log.d("", "onClick: " + position);
+
+
                 cartActivity.cancelProjectAt(position);
             }
         });
@@ -77,9 +80,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     public void setData(List<Project> projets) {
-        this.projects.clear();
+
         if (projets != null) {
-            this.projects.addAll(projets);
+            this.projects = projets;
         }
         notifyDataSetChanged();
     }

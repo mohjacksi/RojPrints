@@ -52,6 +52,8 @@
 
     <string name="city_prompt">Choose a city</string>
     <string name="please_fill_all">Please enter all information</string>
+    <string name="thank_you">Thank you order successfully completed</string>
+    <string name="successfully">Successfully completed</string>
     <string-array name="cities">
         <item>Duhok</item>
         <item>Zakho</item>

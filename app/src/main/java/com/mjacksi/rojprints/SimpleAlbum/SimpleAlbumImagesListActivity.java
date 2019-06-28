@@ -208,6 +208,8 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
                     images) {
                 Log.d(TAG, "onActivityResult: " + image.getPath());
             }
+
+
             imageAdapter.setData(images);
 
             // ImagePicker, single
@@ -220,8 +222,7 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
         // uCrop
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             final Uri resultUri = UCrop.getOutput(data);
-            images.get(pos_image_changed).setPath(resultUri.toString().replace("file://", ""));
-
+            images.get(pos_image_changed).setEditedPath(resultUri.toString().replace("file://", ""));
             imageAdapter.setData(images);
         } else if (resultCode == UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);
@@ -355,4 +356,15 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
         realm.close();
         finish();
     }
+
+    private void cropImages(){
+        for (Image image :
+                images) {
+
+
+
+        }
+    }
+
+
 }

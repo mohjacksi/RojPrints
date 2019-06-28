@@ -36,7 +36,7 @@
     <string name="photo_print_description">حول ذكرياتك الى صورة مطبوعة لكي يبقى عندكم لزمنن اطول</string>
     <string name="home_decor_desc">زيين بيتك بصورك او اعزائك بلأحجام مختلفةودقة عالية مكبوسة على الخشب جاهزة للتعليق</string>
     <string name="phone_number">Phone number</string>
-    <string name="will_call_you">Note: Yoملاحظة: سيتم الاتصال بك خلال 6 ساعات القادمة u will be contacted within the next 6 hours</string>
+    <string name="will_call_you">سيتم الاتصال بك خلال 6 ساعات القادمة</string>
     <string name="address">العنوان</string>
     <string name="chose_a_city">اختار مدينتك:</string>
     <string name="delivery">توصيل</string>
@@ -56,4 +56,6 @@
         <item>حلبجة</item>
     </string-array>
     <string name="please_fill_all">يرجى ادخال جميع المعلومات</string>
+    <string name="thank_you">شكرا الطلبية تم بنجاح</string>
+    <string name="successfully">نجاح العملية</string>
 </resources>

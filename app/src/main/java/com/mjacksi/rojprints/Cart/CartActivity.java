@@ -23,14 +23,17 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 public class CartActivity extends AppCompatActivity {
+    private static final String TAG = CartActivity.class.getSimpleName();
     CartAdapter cartAdapter;
     TextView total;
     RealmResults<Project> projects;
+    Realm realm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        Realm realm = Realm.getDefaultInstance();
+        Realm.init(this);
+        realm = Realm.getDefaultInstance();
         projects = realm.where(Project.class).equalTo("isInCart", true).findAll();
 
         RecyclerView recyclerView = findViewById(R.id.cart_recycler_view);
@@ -106,12 +109,14 @@ public class CartActivity extends AppCompatActivity {
 
 //        Project project = realm.where(Project.class).equalTo("id", id).findFirst();
 //        project.increaseCount();
+        Log.d(TAG, "cancelProjectAt: " + position);
         projects.get(position).deleteFromRealm();
 
         realm.commitTransaction();
         realm.close();
 
         calculateTotal();
+        cartAdapter.setData(projects);
     }
 
     public void orderButton(View view) {

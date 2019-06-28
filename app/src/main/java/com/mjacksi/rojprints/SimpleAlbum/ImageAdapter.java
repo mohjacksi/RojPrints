@@ -1,6 +1,8 @@
 package com.mjacksi.rojprints.SimpleAlbum;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.mjacksi.rojprints.R;
 import com.nguyenhoanglam.imagepicker.model.Image;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,9 +64,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         set.setDimensionRatio(frameLayout.getId(),String.format( "H,%f:%f",ratio[0],ratio[1]));
         set.applyTo(constraintLayout);
 
-
+        String path = image.hasEditedImage()? image.getEditedPath():image.getPath();
         Glide.with(context)
-                .load(image.getPath())
+                .load(path)
                 .apply(new RequestOptions().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                 .into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +88,26 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         else
             holder.sequence.setText(String.valueOf(position));
 
-
+        View v = holder.imageView;
+        v.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                "/rojprint";
+        File dir = new File(file_path);
+        if(!dir.exists())
+            dir.mkdirs();
+        File file = new File(dir, "rojprint" + image.getName() + ".png");
+        FileOutputStream fOut = null;
+        try {
+            fOut = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

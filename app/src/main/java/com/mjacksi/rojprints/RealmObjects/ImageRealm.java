@@ -12,18 +12,20 @@ public class ImageRealm extends RealmObject {
     private long id;
 
     private String name;
-    private String path;
 
+    private String originalPath;
+    private String editedPath = "";
+    private String url = "";
     public ImageRealm(){}
 
-    public ImageRealm(String name, String path) {
+    public ImageRealm(String name, String originalPath) {
         this.id  = generateUniqueId();
         this.name = name;
-        this.path = path;
+        this.originalPath = originalPath;
     }
 
     Image getAsImage(){
-        return new Image(id,name,path);
+        return new Image(id,name, originalPath);
     }
 
     public long getId() {
@@ -42,12 +44,12 @@ public class ImageRealm extends RealmObject {
         this.name = name;
     }
 
-    public String getPath() {
-        return path;
+    public String getOriginalPath() {
+        return originalPath;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setOriginalPath(String originalPath) {
+        this.originalPath = originalPath;
     }
 
     private Long generateUniqueId() {
@@ -57,4 +59,26 @@ public class ImageRealm extends RealmObject {
         } while (val < 0);
         return val;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+
+    public String getEditedPath() {
+        return editedPath;
+    }
+
+    public void setEditedPath(String editedPath) {
+        this.editedPath = editedPath;
+    }
+
+    public boolean hasEditedImage(){
+        return !editedPath.equals("");
+    }
+
 }
