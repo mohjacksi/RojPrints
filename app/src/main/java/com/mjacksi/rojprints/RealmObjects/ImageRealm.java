@@ -13,19 +13,19 @@ public class ImageRealm extends RealmObject {
 
     private String name;
 
-    private String originalPath;
+    private String path;
     private String editedPath = "";
     private String url = "";
     public ImageRealm(){}
 
-    public ImageRealm(String name, String originalPath) {
+    public ImageRealm(String name, String path) {
         this.id  = generateUniqueId();
         this.name = name;
-        this.originalPath = originalPath;
+        this.path = path;
     }
 
     Image getAsImage(){
-        return new Image(id,name, originalPath);
+        return new Image(id,name, path);
     }
 
     public long getId() {
@@ -44,12 +44,12 @@ public class ImageRealm extends RealmObject {
         this.name = name;
     }
 
-    public String getOriginalPath() {
-        return originalPath;
+    public String getpath() {
+        return path;
     }
 
-    public void setOriginalPath(String originalPath) {
-        this.originalPath = originalPath;
+    public void setpath(String path) {
+        this.path = path;
     }
 
     private Long generateUniqueId() {

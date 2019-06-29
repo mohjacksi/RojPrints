@@ -90,7 +90,7 @@ public class Project extends RealmObject {
     public ArrayList<Image> getImagesAsImageObject() {
         ArrayList<Image> images = new ArrayList<>();
         for (ImageRealm imageRealm : this.images) {
-            images.add(new Image(imageRealm.getId(), imageRealm.getName(), imageRealm.getOriginalPath()));
+            images.add(new Image(imageRealm.getId(), imageRealm.getName(), imageRealm.getpath()));
         }
         return images;
     }

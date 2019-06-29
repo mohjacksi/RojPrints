@@ -30,12 +30,13 @@ import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
 import com.yalantis.ucrop.UCrop;
 
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
 
-import org.apache.commons.lang3.RandomStringUtils;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -222,7 +223,7 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
         // uCrop
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             final Uri resultUri = UCrop.getOutput(data);
-            images.get(pos_image_changed).setEditedPath(resultUri.toString().replace("file://", ""));
+            images.get(pos_image_changed).setPath(resultUri.toString().replace("file://", ""));
             imageAdapter.setData(images);
         } else if (resultCode == UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);

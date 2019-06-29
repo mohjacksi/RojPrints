@@ -1,3 +1,1 @@
 include ':app', ':imagepicker'
-include '::libraries:imagepicker'
-project(':imagepicker').projectDir = new File('libraries/imagepicker')

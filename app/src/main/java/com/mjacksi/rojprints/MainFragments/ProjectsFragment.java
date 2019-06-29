@@ -87,7 +87,7 @@ public class ProjectsFragment extends Fragment {
             }
             ImageView imageView = (ImageView) convertView.findViewById(R.id.setting_icon);
             Glide.with(getContext())
-                    .load(projectCover.getOriginalPath())
+                    .load(projectCover.getpath())
                     .apply(new RequestOptions().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                     .into(imageView);
             TextView size = convertView.findViewById(R.id.project_size);

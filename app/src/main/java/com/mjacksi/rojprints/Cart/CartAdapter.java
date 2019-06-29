@@ -41,7 +41,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         final Project project = projects.get(position);
 
         Glide.with(context)
-                .load(project.getImages().get(0).getOriginalPath())
+                .load(project.getImages().get(0).getpath())
                 .apply(new RequestOptions().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                 .into(holder.image);
 

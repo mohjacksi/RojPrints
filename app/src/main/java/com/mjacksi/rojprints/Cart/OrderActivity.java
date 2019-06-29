@@ -269,7 +269,7 @@ public class OrderActivity extends AppCompatActivity {
                     continue;
                 }
 
-                Uri file = Uri.fromFile(new File(image.getOriginalPath()));
+                Uri file = Uri.fromFile(new File(image.getpath()));
                 StorageReference ref = storageRef.child(image.getName());
 
                 UploadTask uploadTask = ref.putFile(file);

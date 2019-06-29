@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mjacksi.rojprints.R;
 import com.mjacksi.rojprints.RealmObjects.Project;
@@ -120,6 +121,11 @@ public class CartActivity extends AppCompatActivity {
     }
 
     public void orderButton(View view) {
+        if(projects.size() == 0)
+        {
+            Toast.makeText(this, "no items in cart", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent i = new Intent(CartActivity.this,OrderActivity.class);
         startActivity(i);
     }

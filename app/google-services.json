@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "782295294367",
+    "firebase_url": "https://new-one-9cf83.firebaseio.com",
+    "project_id": "new-one-9cf83",
+    "storage_bucket": "new-one-9cf83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782295294367:android:db7842c411388e6b",
+        "android_client_info": {
+          "package_name": "com.mjacksi.rojprints"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "782295294367-uo5u4p6qctmlbn1uaegs292oh8tql4f2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mjacksi.rojprints",
+            "certificate_hash": "c5a2975985a015373b32ab7a7e07615a6f07acce"
+          }
+        },
+        {
+          "client_id": "782295294367-2i931f4i22hm281fmuao59a1vaj7rh8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYJaercHeavfMkaGdBFxEWbmSl6FwcJpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "782295294367-2i931f4i22hm281fmuao59a1vaj7rh8v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "782295294367-cu89cu8s5a67d4kpu2meu0svrockl1g8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "smart.angle.net.roj.print"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

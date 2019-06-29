@@ -64,9 +64,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         set.setDimensionRatio(frameLayout.getId(),String.format( "H,%f:%f",ratio[0],ratio[1]));
         set.applyTo(constraintLayout);
 
-        String path = image.hasEditedImage()? image.getEditedPath():image.getPath();
+
         Glide.with(context)
-                .load(path)
+                .load(image.getPath())
                 .apply(new RequestOptions().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                 .into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
