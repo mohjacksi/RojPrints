@@ -40,7 +40,7 @@ import io.realm.Realm;
 public class ChoosePhoto extends AppCompatActivity {
     final int SINGLE_IMAGE_PICKER_REQ_CODE = 200;
     final String SAMPLE_CROPPED_IMAGE_NAME = "uCrop";
-
+    String originalPath = "";
     float w, h;
     boolean ratioChanged = false;
     Image image;
@@ -154,6 +154,7 @@ public class ChoosePhoto extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SINGLE_IMAGE_PICKER_REQ_CODE && resultCode == RESULT_OK && data != null) {
             image = (Image) data.getParcelableArrayListExtra(Config.EXTRA_IMAGES).get(0);
+            originalPath = image.getPath();
             startCrop();
             updateUi();
         }
@@ -186,6 +187,11 @@ public class ChoosePhoto extends AppCompatActivity {
             set.setDimensionRatio(frameLayout.getId(), String.format("H,%f:%f", h, w));
         set.applyTo(constraintLayout);
         ratioChanged = !ratioChanged;
+
+        if(!originalPath.equals("")) {
+            image.setPath(originalPath);
+            startCrop();
+        }
     }
 
     @Override

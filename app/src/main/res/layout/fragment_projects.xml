@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainFragments.ProjectsFragment">
 
+    <ImageView
+        android:id="@+id/empty_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/project_listview"
+        app:layout_constraintEnd_toEndOf="@+id/project_listview"
+        app:layout_constraintStart_toStartOf="@+id/project_listview"
+        app:layout_constraintTop_toTopOf="@+id/project_listview"
+        app:srcCompat="@drawable/empty_list"
+        tools:src="@drawable/empty_list" />
+
     <ListView
         android:id="@+id/project_listview"
         android:layout_width="0dp"
@@ -15,5 +27,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:divider="@null"
         android:dividerHeight="0dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+    </ListView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

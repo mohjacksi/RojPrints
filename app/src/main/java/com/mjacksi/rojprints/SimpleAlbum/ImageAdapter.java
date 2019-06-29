@@ -88,26 +88,27 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         else
             holder.sequence.setText(String.valueOf(position));
 
-        View v = holder.imageView;
-        v.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
-        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                "/rojprint";
-        File dir = new File(file_path);
-        if(!dir.exists())
-            dir.mkdirs();
-        File file = new File(dir, "rojprint" + image.getName() + ".png");
-        FileOutputStream fOut = null;
-        try {
-            fOut = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-            fOut.flush();
-            fOut.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // To tack snapshot to view
+//        View v = holder.imageView;
+//        v.setDrawingCacheEnabled(true);
+//        Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
+//        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+//                "/rojprint";
+//        File dir = new File(file_path);
+//        if(!dir.exists())
+//            dir.mkdirs();
+//        File file = new File(dir, "rojprint" + image.getName() + ".png");
+//        FileOutputStream fOut = null;
+//        try {
+//            fOut = new FileOutputStream(file);
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+//            fOut.flush();
+//            fOut.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
