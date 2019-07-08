@@ -43,14 +43,13 @@ public class PhotoPrintSize extends AppCompatActivity {
 
         if(getIntent().getStringExtra("type").equals("photo_print")) {
             toolbarSetup(getString(R.string.photo_print_titile));
-            boxSizes.add(new ImageSize(1, 1.5f, "10 X 15 cm", "2,500 per page",R.drawable.photo_print_10x15,2500));
-            boxSizes.add(new ImageSize(1, 1.14f, "15 X 21 cm", "4,000 per page",R.drawable.photo_print_15x21,4000));
-            boxSizes.add(new ImageSize(1, 1.38f, "13 X 18 cm", "3,000 per page",R.drawable.photo_print_13x18,3000));
-            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "300 per page",R.drawable.photos4,300));
-            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "300 per page",R.drawable.photos6,300));
-            boxSizes.add(new ImageSize(1, 1, "5 X 5 cm", "300 per page",R.drawable.photos6_5x5,300));
-            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "300 per page",R.drawable.photos6,300));
-            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "300 per page",R.drawable.photos8,300));
+            boxSizes.add(new ImageSize(1, 1.5f, "10 X 15 cm", "250 IQD",R.drawable.photo_print_10x15,250));
+            boxSizes.add(new ImageSize(1, 1.14f, "15 X 21 cm", "400 IQD",R.drawable.photo_print_15x21,400));
+            boxSizes.add(new ImageSize(1, 1.38f, "13 X 18 cm", "300 IQD",R.drawable.photo_print_13x18,300));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "3000 IQD",R.drawable.photos4,3000));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "4000 IQD",R.drawable.photos6,4000));
+            boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "8000 IQD",R.drawable.photos8,8000));
+            boxSizes.add(new ImageSize(1, 1, "5 X 5 cm", "5000",R.drawable.photos6_5x5,5000));
             file_maps.put("1",R.drawable.photo_print1);
             file_maps.put("2",R.drawable.photo_print2);
             file_maps.put("3",R.drawable.photo_print3);
@@ -61,13 +60,13 @@ public class PhotoPrintSize extends AppCompatActivity {
             TextView description = findViewById(R.id.description);
             description.setText(getString(R.string.home_decor_desc));
             toolbarSetup(getString(R.string.hode_decor_title));
-            boxSizes.add(new ImageSize(1, 1.5f, "20 X 30 cm", "8,000 per page",R.drawable._20x30,8000));
-            boxSizes.add(new ImageSize(1, 1.5f, "30 X 45 cm", "15,000 per page",R.drawable._30x45,15000));
-            boxSizes.add(new ImageSize(1, 2, "30 X 60 cm", "22,000 per page",R.drawable._30x60,22000));
-            boxSizes.add(new ImageSize(1, 3, "30 X 90 cm", "26,000 per page",R.drawable._30x90,26000));
-            boxSizes.add(new ImageSize(1, 1.5f, "40 X 60 cm", "36,000 per page",R.drawable._40x60,36000));
-            boxSizes.add(new ImageSize(1, 1.5f, "50 X 75 cm", "45,000 per page",R.drawable._50x75,45000));
-            boxSizes.add(new ImageSize(1, 1.5f, "60 X 90 cm", "60,000 per page",R.drawable._60x90,6000));
+            boxSizes.add(new ImageSize(1, 1.5f, "20 X 30 cm", "8,000 IQD",R.drawable._20x30,8000));
+            boxSizes.add(new ImageSize(1, 1.5f, "30 X 45 cm", "15,000 IQD",R.drawable._30x45,15000));
+            boxSizes.add(new ImageSize(1, 2, "30 X 60 cm", "22,000 IQD",R.drawable._30x60,22000));
+            boxSizes.add(new ImageSize(1, 3, "30 X 90 cm", "26,000 IQD",R.drawable._30x90,26000));
+            boxSizes.add(new ImageSize(1, 1.5f, "40 X 60 cm", "36,000 IQD",R.drawable._40x60,36000));
+            boxSizes.add(new ImageSize(1, 1.5f, "50 X 75 cm", "45,000 IQD",R.drawable._50x75,45000));
+            boxSizes.add(new ImageSize(1, 1.5f, "60 X 90 cm", "60,000 IQD",R.drawable._60x90,6000));
 
             file_maps.put("1",R.drawable.bigimage1);
             file_maps.put("2",R.drawable.bigimage2);

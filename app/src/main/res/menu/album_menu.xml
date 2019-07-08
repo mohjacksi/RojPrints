@@ -13,8 +13,8 @@
         android:title="save project"
         app:showAsAction="always" />
     <item
-        android:id="@+id/add_to_cart_album"
-        android:icon="@drawable/ic_add_shopping_cart"
-        android:title="add to cart"
+        android:id="@+id/next"
+        android:icon="@drawable/ic_arrow_forward_black_24dp"
+        android:title="next"
         app:showAsAction="always" />
 </menu>

@@ -2,7 +2,10 @@ package com.mjacksi.rojprints.SimpleAlbum;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.request.RequestOptions;
 import com.mjacksi.rojprints.R;
+import com.mjacksi.rojprints.Utilises.CropTransformation;
+import com.mjacksi.rojprints.Utilises.FileTarget;
 import com.nguyenhoanglam.imagepicker.model.Image;
 
 import java.io.File;
@@ -28,8 +35,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
+import github.nisrulz.screenshott.ScreenShott;
+
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
+    private static final String TAG = ImageAdapter.class.getSimpleName();
     private Context context;
     private List<Image> images;
     private LayoutInflater inflater;
@@ -50,25 +60,46 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ImageViewHolder(inflater.inflate(R.layout.album_list_item_square, parent, false));
+        if (ratio[0] == ratio[1])
+            return new ImageViewHolder(inflater.inflate(R.layout.album_list_item_square, parent, false));
+        else
+            return new ImageViewHolder(inflater.inflate(R.layout.album_list_item, parent, false));
     }
+
     @Override
     public void onBindViewHolder(ImageViewHolder holder, final int position) {
 
         final Image image = images.get(position);
-        final FrameLayout frameLayout= holder.frameLayout;
+        final FrameLayout frameLayout = holder.frameLayout;
         final ConstraintLayout constraintLayout = holder.constraintLayout;
 
 
-        set.clone(constraintLayout);
-        set.setDimensionRatio(frameLayout.getId(),String.format( "H,%f:%f",ratio[0],ratio[1]));
-        set.applyTo(constraintLayout);
+//        set.clone(constraintLayout);
+//        set.setDimensionRatio(frameLayout.getId(), String.format("H,%f:%f", ratio[0], ratio[1]));
+//        set.applyTo(constraintLayout);
 
-
+        String path = image.getPath();
         Glide.with(context)
-                .load(image.getPath())
+                .load(path)
                 .apply(new RequestOptions().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
+                .transform(new CropTransformation(200,200, CropTransformation.CropType.CENTER))
                 .into(holder.imageView);
+
+
+
+
+            // or
+//        File imgFile = new File(image.getPath());
+//        if (imgFile.exists()) {
+//
+//            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+//
+//            ImageView myImage = holder.imageView;
+//
+//            myImage.setImageBitmap(myBitmap);
+//
+//        }
+
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +114,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             }
         });
 
-        if(position == 0)
+        if (position == 0)
             holder.sequence.setText(context.getString(R.string.cover_image_description));
         else
             holder.sequence.setText(String.valueOf(position));
@@ -110,6 +141,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 //            e.printStackTrace();
 //        }
 
+
+
     }
 
     @Override
@@ -134,6 +167,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         ConstraintLayout constraintLayout;
 
         ImageButton deleteButton;
+
         public ImageViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.image_view);

@@ -14,7 +14,6 @@ public class ImageRealm extends RealmObject {
     private String name;
 
     private String path;
-    private String editedPath = "";
     private String url = "";
     public ImageRealm(){}
 
@@ -66,19 +65,6 @@ public class ImageRealm extends RealmObject {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-
-    public String getEditedPath() {
-        return editedPath;
-    }
-
-    public void setEditedPath(String editedPath) {
-        this.editedPath = editedPath;
-    }
-
-    public boolean hasEditedImage(){
-        return !editedPath.equals("");
     }
 
 }

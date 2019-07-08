@@ -36,9 +36,9 @@
 
             <ImageButton
                 android:id="@+id/deleteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#85FFFFFF"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:background="@null"
                 app:srcCompat="@drawable/cancel" />
 
         </FrameLayout>

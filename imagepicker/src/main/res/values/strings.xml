@@ -7,8 +7,6 @@
     <string name="imagepicker_title_image">Galleries</string>
 
     <string name="imagepicker_text_gif">GIF</string>
-    <string name="imagepicker_photo_count_multiple">%d images</string>
-    <string name="imagepicker_photo_count_single">%d image</string>
 
     <string name="imagepicker_error_no_camera">No camera found</string>
     <string name="imagepicker_error_create_image_file">Failed to create image file</string>

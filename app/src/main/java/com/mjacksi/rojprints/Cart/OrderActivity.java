@@ -8,8 +8,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -32,22 +34,32 @@ import com.mjacksi.rojprints.RealmObjects.ImageRealm;
 import com.mjacksi.rojprints.RealmObjects.Project;
 import com.mjacksi.rojprints.Utilises.InternetConnection;
 
+import org.json.JSONArray;
+
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
+import needle.Needle;
+import needle.UiRelatedProgressTask;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class OrderActivity extends AppCompatActivity {
 
     private static final String TAG = OrderActivity.class.getSimpleName();
-    TextView phoneTv, nameTv, addressTv, notesTv, totalTv;
+    TextView nameTv, addressTv, notesTv, totalTv; //phoneTv
     Spinner citySp;
     Switch giftSw, deliverySw;
     String phone, name, address, notes, total, city, gift, delivery;
@@ -61,7 +73,7 @@ public class OrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
-        phoneTv = findViewById(R.id.order_phone_number);
+        //phoneTv = findViewById(R.id.order_phone_number);
         nameTv = findViewById(R.id.order_name);
         addressTv = findViewById(R.id.order_address);
         notesTv = findViewById(R.id.order_notes);
@@ -149,7 +161,7 @@ public class OrderActivity extends AppCompatActivity {
         }
 
 
-        phone = phoneTv.getText().toString();
+        phone = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
         name = nameTv.getText().toString();
         address = addressTv.getText().toString();
         notes = notesTv.getText().toString();
@@ -167,7 +179,6 @@ public class OrderActivity extends AppCompatActivity {
         }
 
 
-
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             signInAnonymously();
@@ -175,64 +186,147 @@ public class OrderActivity extends AppCompatActivity {
         uploadImages();
     }
 
+    public String getProjectsJSON() {
+        Realm realm = Realm.getDefaultInstance();
+        ArrayList<Project> list = new ArrayList<Project>();
+        for (Project project :
+                projects) {
+            list.add(realm.copyFromRealm(project));
+            Log.d(TAG, "test: " + project.getId());
+        }
+        JSONArray jsArray = new JSONArray(list);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        return json;
+    }
+
+    public String getPost() {
+        List<String> map = new ArrayList<>();
+        map.add("NotificationId=" + ""); // TODO ?
+        map.add("&friendPhone=" + ""); // TODO ?
+        map.add("&AuthKey=" + "authkeyavrazauthkey29");
+        map.add("&City=" + city);
+        map.add("&isDelivery=" + delivery);
+        map.add("&Address=" + address);
+        map.add("&UserName=" + name);
+        map.add("&Payment=" + "الدفع عند الاستلام"); // TODO !
+        map.add("&cards=" + ""); // TODO
+        map.add("&TotalePrice=" + total);
+        map.add("&pageJson=" + getPageJson());
+        map.add("&Note=" + notes);
+        map.add("&PhoneNumber=" + phone);
+        map.add("&cardsArray=" + getCardsArray());
+        map.add("&isGift=" + gift);
+
+
+        String post = "";
+        for (String s : map) {
+            post += s;
+        }
+
+        return post;
+    }
+
+    private String getCardsArray() {
+        String s = "[";
+        for (Project project :
+                projects) {
+            if (project.getImages().size() > 1) continue;
+            s += project.getCardArrayJson();
+        }
+        if (s.length() > 1) {
+            s = s.substring(0, s.length() - 1);
+        }
+        s += "]";
+        Log.d(TAG, "getPageJson: \n\n\n");
+        Log.d(TAG, "getCardsArray: " + s);
+        Log.d(TAG, "getPageJson: \n\n\n");
+
+
+        return s;
+    }
+
+    private String getPageJson() {
+        String s = "[";
+        for (Project project :
+                projects) {
+            if (project.getImages().size() < 14) continue;
+            s += project.getPageJson();
+        }
+        if (s.length() > 1) {
+            s = s.substring(0, s.length() - 1);
+        }
+        s += "]";
+        int chunkSize = 2048;
+
+        Log.d(TAG, "getPageJson: \n\n\n");
+        for (int i = 0; i < s.length(); i += chunkSize) {
+            Log.d("", s.substring(i, Math.min(s.length(), i + chunkSize)));
+        }
+        Log.d(TAG, "getPageJson: \n\n\n");
+        //Log.d(TAG, "getPageJson: " + s);
+
+        return s;
+    }
 
     public void sendPost() {
 
-        Realm realm = Realm.getDefaultInstance();
-        Gson gson = new Gson();
+        //String post = getPost();
+
+//
+//        OkHttpClient client = new OkHttpClient();
+//
+//        RequestBody formBody = new FormBody.Builder()
+//                .add("NotificationId", "") // TODO ?
+//                .add("&friendPhone=", "") // TODO ?
+//                .add("&AuthKey=", "authkeyavrazauthkey29")
+//                .add("&City=", city)
+//                .add("&isDelivery=", delivery)
+//                .add("&Address=", address)
+//                .add("&UserName=", name)
+//                .add("&Payment=", "الدفع عند الاستلام")// TODO !
+//                .add("&cards=", "") // TODO
+//                .add("&TotalePrice=", total)
+//                .add("&pageJson=", getPageJson())
+//                .add("&Note=", notes)
+//                .add("&PhoneNumber=", phone)
+//                .add("&cardsArray=", getCardsArray())
+//                .add("&isGift=", gift).build();
+//
+//        Request request = new Request.Builder()
+//                .url("http://rojprint.com/admin/ajax/ajax_orders.php")
+//                .post(formBody)
+//                .build();
+//
 
 
+        WebView webView = findViewById(R.id.webview2);
+        webView.getSettings().setLoadsImagesAutomatically(true);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        webView.setVisibility(View.VISIBLE);
 
+        String postData = getPost();
 
-        for (int i = 0; i < projects.size(); i++) {
-            Project project = projects.get(i);
-
-            Project project1 = realm.copyFromRealm(project); //detach from Realm, copy values to fields
-            String json = gson.toJson(project1);
-            Log.d(TAG, "sendPost: " + json);
-
-            RealmList<ImageRealm> images = project.getImages();
-            for (int j = 0; j < images.size(); j++) {
-                ImageRealm image = images.get(j);
-
-
-            }
+        try {
+            webView.postUrl("http://rojprint.com/admin/ajax/ajax_orders.php", postData.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
 
-
-        OkHttpClient client = new OkHttpClient();
-
-        RequestBody formBody = new FormBody.Builder()
-                .add("AuthKey", "authkeyavrazauthkey29")
-                .add("NotificationId", "") // TODO ?
-                .add("PhoneNumber", phone)
-                .add("UserName", name)
-                .add("Address", address)
-                .add("City", city)
-                .add("isDelivery",delivery)
-                .add("friendPhone", "") // TODO ?
-                .add("isGift", gift)
-                .add("Payment", "pay when receive") // TODO !
-                .add("Note", notes)
-                .add("TotalePrice", total)
-                .add("cards", "") // TODO
-                .build();
-        Request request = new Request.Builder()
-                .url("http://rojprint.com/admin/ajax/ajax_orders.php")
-                .post(formBody)
-                .build();
-
-            // TODO
-//        try {
-//             Response response = client.newCall(request).execute();
-//
-//            // Do something with the response.
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
+        int chunkSize = 2048;
+        Log.d(TAG, "post: \n\n\n");
+        for (int i = 0; i < postData.length(); i += chunkSize) {
+            Log.d("", postData.substring(i, Math.min(postData.length(), i + chunkSize)));
+        }
+        Log.d(TAG, "post: \n\n\n");
         //TODO: delete all projects after upload
+        deleteAllProjects();
+
+    }
+
+    private void deleteAllProjects() {
 
     }
 
@@ -314,7 +408,6 @@ public class OrderActivity extends AppCompatActivity {
         //realm.close();
 
     }
-
 
 
     private void updateProgress() {

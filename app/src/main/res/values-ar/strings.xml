@@ -19,7 +19,6 @@
     <string name="rojprint_projects">مشروع</string>
     <string name="rojprint_settings">الضبط</string>
     <string name="rojprint_shop">التسوق</string>
-    <string name="title_activity_map">موقعنا الجغرافي</string>
     <string name="call_us">اتصل بنا</string>
     <string name="change_image">تغيير الصورة</string>
     <string name="change_ratio">عكس الابعاد</string>
@@ -58,4 +57,6 @@
     <string name="please_fill_all">يرجى ادخال جميع المعلومات</string>
     <string name="thank_you">شكرا الطلبية تم بنجاح</string>
     <string name="successfully">نجاح العملية</string>
+    <string name="layout">تقسيم الصورة</string>
+    <string name="add_text_cover">لاضافة كتابة على الغلاف الخلفي للالبوم</string>
 </resources>

@@ -3,10 +3,15 @@ package com.mjacksi.rojprints.MainFragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -28,6 +33,9 @@ public class ShopFragment extends Fragment {
 
     ImageButton simpleAlbum, photoPrint, homeDecor;
 
+    RotateAnimation animation = new RotateAnimation(0,360, Animation.RELATIVE_TO_SELF,0.5f , Animation.RELATIVE_TO_SELF,0.5f );
+
+
     public ShopFragment() {
         // Required empty public constructor
     }
@@ -36,6 +44,9 @@ public class ShopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        animation.setFillAfter(true);
+        animation.setDuration(250);
+
         View view = inflater.inflate(R.layout.fragment_shop, container, false);
 
 
@@ -47,49 +58,105 @@ public class ShopFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), SimpleAlbumBoxSize.class);
-                startActivity(i);
+
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+
+
+                v.startAnimation(animation);
+
             }
         });
         photoPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), PhotoPrintSize.class);
-                i.putExtra("type","photo_print");
-                startActivity(i);
+                i.putExtra("type", "photo_print");
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+                v.startAnimation(animation);
             }
         });
         homeDecor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), PhotoPrintSize.class);
-                i.putExtra("type","home_decor");
-                startActivity(i);
+                i.putExtra("type", "home_decor");
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+                v.startAnimation(animation);
 
             }
         });
 
 
-        SliderLayout mDemoSlider  = (SliderLayout)view.findViewById(R.id.slider);;
+        SliderLayout mDemoSlider = (SliderLayout) view.findViewById(R.id.slider);
+        ;
 
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("description1",R.drawable.slidshow1);
-        file_maps.put("description2",R.drawable.slidshow2);
-        file_maps.put("description3",R.drawable.slidshow3);
-        file_maps.put("description3",R.drawable.slidshow4);
+        HashMap<String, Integer> file_maps = new HashMap<String, Integer>();
+        file_maps.put("1", R.drawable.slidshow1);
+        file_maps.put("2", R.drawable.slidshow2);
+        file_maps.put("3", R.drawable.slidshow3);
+        file_maps.put("4", R.drawable.slidshow4);
 
-        for(String name : file_maps.keySet()){
+        for (String name : file_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(getContext());
             // initialize a SliderLayout
             textSliderView
                     .description(name)
                     .image(file_maps.get(name))
                     .setScaleType(BaseSliderView.ScaleType.Fit);
-                    //.setOnSliderClickListener(this);
+            //.setOnSliderClickListener(this);
 
             //add your extra information
             textSliderView.bundle(new Bundle());
             textSliderView.getBundle()
-                    .putString("extra",name);
+                    .putString("extra", name);
 
             mDemoSlider.addSlider(textSliderView);
         }

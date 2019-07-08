@@ -42,4 +42,10 @@
     <string name="please_fill_all">هیڤیدارین هه‌می پێزانینا توماربكه‌</string>
     <string name="thank_you">سوپاس. داخازیا ته‌ سه‌ركه‌فتیانه‌ گه‌هشت</string>
     <string name="successfully">سه‌ركه‌فت</string>
+    <string name="rate_us">"  ئاستێ مە دیار کە"</string>
+    <string name="our_address">جهێ مە</string>
+    <string name="our_adress">جهێ مە</string>
+    <string name="change_image">گهورینا وێنەی</string>
+    <string name="change_ratio">دێوێرینا وێنەی</string>
+    <string name="add_text_cover">بو زیده‌كرنا نفیسینێ لسه‌ر بشتا كه‌فرێ ێه‌لبومێ</string>
 </resources>

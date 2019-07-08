@@ -8,20 +8,28 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Toast;
 
-import com.mjacksi.rojprints.MainActivity;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.mjacksi.rojprints.R;
+import com.mjacksi.rojprints.RealmObjects.ImageRealm;
 import com.mjacksi.rojprints.RealmObjects.Project;
 import com.mjacksi.rojprints.Utilises.Utilises;
 import com.nguyenhoanglam.imagepicker.model.Config;
@@ -33,17 +41,22 @@ import com.yalantis.ucrop.UCrop;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
 
 
 import io.realm.Realm;
-import io.realm.RealmResults;
+import io.realm.RealmList;
+import needle.Needle;
+import needle.UiRelatedProgressTask;
 
 
 public class SimpleAlbumImagesListActivity extends AppCompatActivity {
     private static final String TAG = SimpleAlbumImagesListActivity.class.getSimpleName();
+    private static final int LAYOUT_REQUEST_CODE = 300;
+    private static final int HEADER_REQUEST_CODE = 400;
     final int MULTI_IMAGE_PICKER_REQ_CODE = 100;
     final int SINGLE_IMAGE_PICKER_REQ_CODE = 200;
     final String SAMPLE_CROPPED_IMAGE_NAME = "uCrop";
@@ -54,16 +67,27 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
     int pos_image_changed = 0;
     ArrayList<Image> images = new ArrayList<>();
 
+    ProgressDialog progressDialog;
+
     float[] ratio = {1, 1};
     String title, id;
     int pricePrePage;
-
-    boolean isEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_album_images_list);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("In progress...");
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setIndeterminate(false);
+        progressDialog.setMax(100);
+        progressDialog.setIcon(R.drawable.ic_done);
+        progressDialog.setCancelable(false);
+
+
         Bundle extras = getIntent().getExtras();
         isEditMode = getIntent().hasExtra("edit");
         if (isEditMode) {
@@ -72,7 +96,7 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
             Project project = realm.where(Project.class).equalTo("id", id).findFirst();
             title = project.getSize();
             images = project.getImagesAsImageObject();
-            pricePrePage = project.getPricePerPage();
+            pricePrePage = project.getPrice();
         } else {
             images = new ArrayList<>();
             title = extras.getString("title");
@@ -147,6 +171,8 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
 
     }
 
+    boolean isEditMode = false;
+
     private void toolbarSetup(String title) {
         Toolbar toolbar = findViewById(R.id.order_toolbar);
         toolbar.setTitle(title);
@@ -199,46 +225,19 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
                 .start();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // ImagePicker, multi
-        if (requestCode == MULTI_IMAGE_PICKER_REQ_CODE && resultCode == RESULT_OK && data != null) {
-            images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
-
-            for (Image image :
-                    images) {
-                Log.d(TAG, "onActivityResult: " + image.getPath());
-            }
-
-
-            imageAdapter.setData(images);
-
-            // ImagePicker, single
-        } else if (requestCode == SINGLE_IMAGE_PICKER_REQ_CODE && resultCode == RESULT_OK && data != null) {
-            images.remove(pos_image_changed);
-            images.add(pos_image_changed, (Image) data.getParcelableArrayListExtra(Config.EXTRA_IMAGES).get(0));
-            imageAdapter.setData(images);
-        }
-
-        // uCrop
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            final Uri resultUri = UCrop.getOutput(data);
-            images.get(pos_image_changed).setPath(resultUri.toString().replace("file://", ""));
-            imageAdapter.setData(images);
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     public void add_images(View view) {
         startPickPictures("multi");
     }
 
     public void editImageAt(final int position) {
-        final CharSequence[] items = {getString(R.string.change_image), getString(R.string.crop_and_rotate)};
+        final CharSequence[] items;
+        if (position == 0) {
+            items = new CharSequence[]{getString(R.string.change_image), getString(R.string.crop_and_rotate), getString(R.string.layout), "Header Typing"};
+        } else {
+            items = new CharSequence[]{getString(R.string.change_image), getString(R.string.crop_and_rotate), getString(R.string.layout)};
 
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(SimpleAlbumImagesListActivity.this);
         builder.setTitle(getString(R.string.chose_action));
@@ -258,6 +257,16 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
                     UCrop uCrop = UCrop.of(uri, destinationUri);
                     uCrop.withAspectRatio(ratio[0], ratio[1])
                             .start(SimpleAlbumImagesListActivity.this);
+                } else if (item == 2) {
+                    Intent i = new Intent(SimpleAlbumImagesListActivity.this, LayoutImagesActivity.class);
+                    i.putExtra("image", images.get(position));
+                    i.putExtra("ratio", ratio[0] == ratio[1]);
+                    startActivityForResult(i, LAYOUT_REQUEST_CODE);
+                } else if (item == 3) {
+                    Intent i = new Intent(SimpleAlbumImagesListActivity.this, HeaderActivity.class);
+                    i.putExtra("image", images.get(position));
+                    i.putExtra("ratio", ratio[0] == ratio[1]);
+                    startActivityForResult(i, HEADER_REQUEST_CODE);
                 }
             }
         }).show();
@@ -283,8 +292,10 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.save_album) {
             saveAlbum();
+            finish();
             return true;
-        } else if (id == R.id.add_to_cart_album) {
+        } else if (id == R.id.next) {
+
             if (images.size() < 14) {
                 Toast.makeText(this, getString(R.string.min_images_number_14), Toast.LENGTH_SHORT).show();
                 return true;
@@ -292,7 +303,12 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
                 Toast.makeText(this, getString(R.string.images_number_should_even), Toast.LENGTH_SHORT).show();
                 return true;
             }
-            addToCart();
+
+//            addToCart();
+            project = saveAlbum();
+            Intent intent = new Intent(SimpleAlbumImagesListActivity.this, DedicationActivity.class);
+            intent.putExtra("album_id", project.getId());
+            startActivity(intent);
             return true;
         } else if (id == R.id.delete_album) {
             deleteAlbum();
@@ -315,24 +331,26 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
         finish();
     }
 
-    private void saveAlbum() {
+    private Project saveAlbum() {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-
+        Project project = null;
         if (isEditMode) {
-            Project project = realm.where(Project.class).equalTo("id", id).findFirst();
+            project = realm.where(Project.class).equalTo("id", id).findFirst();
             project.setImages(images);
         } else {
             String _id = UUID.randomUUID().toString();
-            Project project = realm.createObject(Project.class, _id);
+            project = realm.createObject(Project.class, _id);
             project.setImages(images);
-            project.setPricePerPage(pricePrePage);
+            project.setPrice(pricePrePage);
             project.setSize(title);
             project.setDate(Utilises.getCurrentTime());
+            project.setSquare(ratio[0] == ratio[1]);
         }
         realm.commitTransaction();
         realm.close();
-        finish();
+
+        return project;
     }
 
     private void addToCart() {
@@ -345,11 +363,12 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
             project.setImages(images);
         } else {
             String _id = UUID.randomUUID().toString();
+            id = _id;
             project = realm.createObject(Project.class, _id);
             project.setImages(images);
-            project.setPricePerPage(pricePrePage);
+            project.setPrice(pricePrePage);
             project.setSize(title);
-            project.setType("album");
+            project.setType("Album");
             project.setDate(Utilises.getCurrentTime());
         }
         project.setInCart(true);
@@ -358,14 +377,207 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
         finish();
     }
 
-    private void cropImages(){
+    private void cropImages() {
         for (Image image :
                 images) {
-
 
 
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // ImagePicker, multi
+        if (requestCode == MULTI_IMAGE_PICKER_REQ_CODE && resultCode == RESULT_OK && data != null) {
+            images = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
+
+            for (Image image :
+                    images) {
+                Log.d(TAG, "onActivityResult: " + image.getPath());
+            }
+
+
+            imageAdapter.setData(images);
+
+            // ImagePicker, single
+        } else if (requestCode == SINGLE_IMAGE_PICKER_REQ_CODE && resultCode == RESULT_OK && data != null) {
+            images.remove(pos_image_changed);
+            images.add(pos_image_changed, (Image) data.getParcelableArrayListExtra(Config.EXTRA_IMAGES).get(0));
+            imageAdapter.setData(images);
+        }
+
+        // result from LayoutImagesActivity
+        if (requestCode == LAYOUT_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            images.remove(pos_image_changed);
+            images.add(pos_image_changed, (Image) data.getParcelableExtra("image"));
+            imageAdapter.setData(images);
+        }
+        // result from HeaderActivity
+        if (requestCode == HEADER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            Toast.makeText(this, "result ok!", Toast.LENGTH_SHORT).show();
+            images.remove(pos_image_changed);
+            images.add(pos_image_changed, (Image) data.getParcelableExtra("image"));
+            imageAdapter.setData(images);
+        }
+
+
+        // uCrop
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            final Uri resultUri = UCrop.getOutput(data);
+            images.get(pos_image_changed).setPath(resultUri.toString().replace("file://", ""));
+            imageAdapter.setData(images);
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    Project project;
+
+    public void preview(View view) {
+
+        project = saveAlbum();
+        uploadImages(project);
+    }
+
+
+    int images_counter = 0;
+    int images_uploaded = 0;
+
+    public void uploadImages(Project project) {
+        images_counter = 0;
+        images_uploaded = 0;
+        for (int j = 0; j < images.size(); j++) {
+            images_counter++;
+        }
+
+
+        progressDialog.setMax(images_counter);
+        progressDialog.show();
+
+
+        RealmList<ImageRealm> images = project.getImages();
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference().child("Mj");
+        StorageReference storageRef = mStorageRef.child("M-" + project.getId());
+        for (int j = 0; j < images.size(); j++) {
+            ImageRealm image = images.get(j);
+            if (!image.getUrl().equals("")) {
+                updateProgress();
+                continue;
+            }
+
+            Uri file = Uri.fromFile(new File(image.getpath()));
+            StorageReference ref = storageRef.child(image.getName());
+
+            UploadTask uploadTask = ref.putFile(file);
+
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    // Continue with the task to get the download URL
+
+                    return ref.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        updateProgress();
+
+                        Log.d(TAG, "onComplete: " + images_uploaded);
+                        Log.d(TAG, "onComplete: " + images_counter);
+                        Uri downloadUri = task.getResult();
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.beginTransaction();
+                        image.setUrl(downloadUri.toString());
+                        realm.commitTransaction();
+                        realm.close();
+
+                        Log.d(TAG, "then: " + downloadUri);
+                    } else {
+                        // Handle failures
+                        // ...
+                    }
+                }
+            });
+        }
+
+
+        //realm.commitTransaction();
+        //realm.close();
+
+    }
+
+
+    private void updateProgress() {
+        images_uploaded++;
+        progressDialog.setProgress(images_uploaded);
+
+        // When all images uploaded
+        if (images_uploaded == images_counter) {
+            progressDialog.hide();
+            new AlertDialog.Builder(SimpleAlbumImagesListActivity.this)
+                    .setTitle(getString(R.string.successfully))
+                    .setMessage(getString(R.string.thank_you))
+                    .setIcon(R.drawable.ic_done)
+            ;//.show();
+
+            sendPost();
+        }
+    }
+
+    private void sendPost() {
+
+        WebView webView = findViewById(R.id.web_view);
+        webView.getSettings().setLoadsImagesAutomatically(true);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        webView.setVisibility(View.VISIBLE);
+        RealmList<ImageRealm> images = project.getImages();
+
+        String postData = "covercover=" + images.first().getUrl()
+                + "&npages=" + images.size() + "&isrec=1.33";
+        for (int i = 1; i < images.size(); i++) {
+            int ii = i - 1;
+            postData += "&page" + ii + "=" + images.get(i).getUrl();
+        }
+        webView.postUrl("http://rojprint.com/admin/preview/2018/preview/turnJs/samples/myalbums/index.php", postData.getBytes());
+
+        Log.d(TAG, "sendPost: " + postData);
+    }
+
+
+//    void cropAllImages() {
+//        Needle.onBackgroundThread().execute(new UiRelatedProgressTask<String, Integer>() {
+//
+//            @Override
+//            protected void onProgressUpdate(Integer integer) {
+//
+//            }
+//
+//            @Override
+//            protected String doWork() {
+//                int result = 0;
+//                for (Image image :
+//                        images) {
+//
+//                }
+//
+//                return "The result is: " + result;
+//            }
+//
+//            @Override
+//            protected void thenDoUiRelatedWork(String s) {
+//
+//            }
+//
+//        });
+//    }
 
 }

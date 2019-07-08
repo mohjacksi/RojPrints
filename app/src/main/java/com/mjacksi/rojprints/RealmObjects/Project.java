@@ -3,6 +3,7 @@ package com.mjacksi.rojprints.RealmObjects;
 import com.nguyenhoanglam.imagepicker.model.Image;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -12,13 +13,22 @@ public class Project extends RealmObject {
     @PrimaryKey
     private String id;
     RealmList<ImageRealm> images = new RealmList<>();
-    int pricePerPage;
+    int price;
 
     long date;
     String size;
     String type;
     int countAtCart = 1;
     boolean isInCart = false;
+    boolean isSquare;
+
+    public boolean isSquare() {
+        return isSquare;
+    }
+
+    public void setSquare(boolean square) {
+        isSquare = square;
+    }
 
     public String getSize() {
         return size;
@@ -29,19 +39,19 @@ public class Project extends RealmObject {
     }
 
     public int getTotalPrice() {
-        return images.size() * pricePerPage * countAtCart;
+        return price * countAtCart;
     }
 
     public Project() {
     }
 
-    public Project(ArrayList<Image> images, int pricePerPage) {
+    public Project(ArrayList<Image> images, int price) {
 
         for (Image image : images) {
             this.images.add(new ImageRealm(image.getName(), image.getPath()));
         }
 
-        this.pricePerPage = pricePerPage;
+        this.price = price;
         this.date = System.currentTimeMillis() / 1000L;
     }
 
@@ -64,19 +74,25 @@ public class Project extends RealmObject {
         }
     }
 
+    public void setImages(RealmList<ImageRealm> images) {
+        this.images.clear();
+        for (ImageRealm image : images) {
+            this.images.add(new ImageRealm(image.getName(), image.getpath()));
+        }
+    }
+
     public void setImages(Image image) {
         this.images.clear();
         this.images.add(new ImageRealm(image.getName(), image.getPath()));
     }
 
-    public int getPricePerPage() {
-        return pricePerPage;
+    public int getPrice() {
+        return price;
     }
 
-    public void setPricePerPage(int pricePerPage) {
-        this.pricePerPage = pricePerPage;
+    public void setPrice(int price) {
+        this.price = price;
     }
-
 
 
     public long getDate() {
@@ -102,6 +118,7 @@ public class Project extends RealmObject {
     public void setInCart(boolean inCart) {
         isInCart = inCart;
     }
+
     public String getType() {
         return type;
     }
@@ -118,15 +135,43 @@ public class Project extends RealmObject {
         this.countAtCart = countAtCart;
     }
 
-    public int increaseCount(){
+    public int increaseCount() {
         countAtCart += 1;
         return countAtCart;
     }
 
-    public int decreaseCount(){
-        if(countAtCart > 1){
-            countAtCart = countAtCart-1;
+    public int decreaseCount() {
+        if (countAtCart > 1) {
+            countAtCart = countAtCart - 1;
         }
         return countAtCart;
+    }
+
+    public String getCardArrayJson() {
+        String s = "";
+        ImageRealm image = images.get(0);
+
+        s += "["; // "id":{
+        //s += "\"" + id + "\":["; // "id":{
+        s += "\"url\":\"" + image.getUrl() + "\",";
+        s += "\"num\":\"" + countAtCart + "\",";
+        s += "\"date\":\"" + date + "\",";
+        s += "\"size\":\"" + size + "\",";
+        s += "\"type\":\"" + type + "\",";
+        s += "\"price\":\"" + getTotalPrice() + "\",";
+        s += "\"url2\":\"\"],";
+        return s;
+    }
+
+    public String getPageJson() {
+        String s = "";
+        for (int i = 0; i < images.size(); i++) {
+            ImageRealm image = images.get(i);
+            s += "["; // "id":{
+            //s += "\"" + UUID.randomUUID().toString() + "\":["; // "id":{
+            s += "\"" + i + "\":\"" + image.getUrl() + "\",";
+            s += "\"parent\":\"" + id + "\"],";
+        }
+        return s;
     }
 }

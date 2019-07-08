@@ -11,19 +11,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.mjacksi.rojprints.MainActivity;
 import com.mjacksi.rojprints.R;
 import com.mjacksi.rojprints.RealmObjects.Project;
-import com.mjacksi.rojprints.SimpleAlbum.SimpleAlbumImagesListActivity;
+import com.mjacksi.rojprints.SimpleAlbum.DedicationActivity;
 import com.mjacksi.rojprints.Utilises.Utilises;
 import com.nguyenhoanglam.imagepicker.model.Config;
 import com.nguyenhoanglam.imagepicker.model.Image;
@@ -194,39 +193,42 @@ public class ChoosePhoto extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.album_menu, menu);
-        MenuItem item = menu.findItem(R.id.save_album);
-        item.setVisible(false);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main_menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.go_to_cart) {
+//            addToCart();
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.add_to_cart_album) {
-            addToCart();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void addToCart() {
+    public void addToCart(View v) { // TODO: very important!!
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         Project project;
         String _id = UUID.randomUUID().toString();
         project = realm.createObject(Project.class, _id);
         project.setImages(image);
-        project.setPricePerPage(price);
+        project.setPrice(price);
         project.setSize(title);
-        project.setType("photo");
+        project.setType("photo print");
         project.setDate(Utilises.getCurrentTime());
         project.setInCart(true);
         realm.commitTransaction();
         realm.close();
-        finish();
+
+
+        Toast.makeText(this, getString(R.string.added_to_cart), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(ChoosePhoto.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

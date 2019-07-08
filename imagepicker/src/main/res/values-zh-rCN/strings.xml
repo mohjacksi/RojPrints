@@ -8,8 +8,6 @@
     <string name="imagepicker_title_image">图库</string>
 
     <string name="imagepicker_text_gif">GIF</string>
-    <string name="imagepicker_photo_count_multiple">%d 张图片</string>
-    <string name="imagepicker_photo_count_single">%d 张图片</string>
 
     <string name="imagepicker_error_no_camera">找不到相机</string>
     <string name="imagepicker_error_create_image_file">无法创建图片文件</string>

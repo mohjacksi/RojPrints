@@ -39,7 +39,7 @@
                     android:layout_height="fill_parent"
                     android:background="@color/colorPrimary"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/pimage1" />
+                    android:src="@drawable/main_album" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                     android:layout_height="fill_parent"
                     android:background="@drawable/radius_bg"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/pimage2" />
+                    android:src="@drawable/main_print_photos" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
                     android:layout_height="fill_parent"
                     android:background="@drawable/radius_bg"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/pimage3" />
+                    android:src="@drawable/main_decor" />
 
                 <TextView
                     android:layout_width="wrap_content"

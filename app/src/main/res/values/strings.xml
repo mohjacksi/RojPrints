@@ -5,7 +5,6 @@
     <string name="title_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="title_activity_map">MapActivity</string>
     <string name="chose_language">Chose language:</string>
     <string name="call_us">Call us</string>
     <string name="language">Language</string>
@@ -54,6 +53,8 @@
     <string name="please_fill_all">Please enter all information</string>
     <string name="thank_you">Thank you order successfully completed</string>
     <string name="successfully">Successfully completed</string>
+    <string name="layout">layout</string>
+    <string name="add_text_cover">To add a writing to the back cover of the album</string>
     <string-array name="cities">
         <item>Duhok</item>
         <item>Zakho</item>

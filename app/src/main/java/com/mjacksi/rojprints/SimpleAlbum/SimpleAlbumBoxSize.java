@@ -33,9 +33,9 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
         setContentView(R.layout.activity_simple_album_box_size);
 
         final ArrayList<BoxSize> boxSizes = new ArrayList<>();
-        boxSizes.add(new BoxSize(1,"15 X 15 cm","2,500 per page",R.drawable._15x15,2500));
-        boxSizes.add(new BoxSize(2,"15 X 20 cm","3,000 per page",R.drawable._15x20,3000));
-        boxSizes.add(new BoxSize(3,"20 X 20 cm","4,000 per page",R.drawable._20x20,4000));
+        boxSizes.add(new BoxSize(1,"15 X 15 cm","25,000",R.drawable._15x15,2500));
+        boxSizes.add(new BoxSize(2,"15 X 20 cm","30,000",R.drawable._15x20,3000));
+        boxSizes.add(new BoxSize(3,"20 X 20 cm","40,000",R.drawable._20x20,4000));
         ListView list = findViewById(R.id.box_size_listview);
         list.setAdapter(new BoxSizesAdapter(this,boxSizes));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

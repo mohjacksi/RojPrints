@@ -3,6 +3,8 @@ apply plugin: 'realm-android'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    useLibrary 'org.apache.http.legacy'
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.mjacksi.rojprints"
@@ -67,4 +69,18 @@ dependencies {
 
     implementation project(':imagepicker')
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
+
+    // PhotoView
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    // Screenshot to view
+    implementation 'com.github.nisrulz:screenshott:2.0.0'
+
+    // Color picker
+    implementation 'com.github.QuadFlask:colorpicker:0.0.13'
+
+    //UI Firebase Auth library
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+
+    // Background thread library
+    implementation 'com.zsoltsafrany:needle:1.0.0'
 }

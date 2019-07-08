@@ -14,8 +14,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Cart.OrderActivity"></activity>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".SimpleAlbum.DedicationActivity"></activity>
+        <activity android:name=".SimpleAlbum.HeaderActivity" />
+        <activity
+            android:name=".SimpleAlbum.PreviewActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".SimpleAlbum.LayoutImagesActivity" />
+        <activity android:name=".Cart.OrderActivity" />
         <activity android:name=".Cart.CartActivity" />
         <activity android:name=".SettingsActivities.AboutActivity" />
         <activity android:name=".SettingsActivities.MapActivity" />
