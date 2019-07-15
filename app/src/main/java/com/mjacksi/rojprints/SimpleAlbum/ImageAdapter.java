@@ -82,7 +82,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         Glide.with(context)
                 .load(path)
                 .apply(new RequestOptions().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
-                .transform(new CropTransformation(200,200, CropTransformation.CropType.CENTER))
                 .into(holder.imageView);
 
 

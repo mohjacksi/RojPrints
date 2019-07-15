@@ -8,7 +8,7 @@
     <string name="chose_language">Chose language:</string>
     <string name="call_us">Call us</string>
     <string name="language">Language</string>
-    <string name="about">About</string>
+    <string name="about">Terms and Conditions</string>
     <string name="contact_us">Contact us</string>
     <string name="rate_us">Rate us</string>
     <string name="our_address">Our address location</string>
@@ -55,6 +55,8 @@
     <string name="successfully">Successfully completed</string>
     <string name="layout">layout</string>
     <string name="add_text_cover">To add a writing to the back cover of the album</string>
+    <string name="please_wait">Please wait</string>
+    <string name="wait_loading">Loading, may it takes long time..</string>
     <string-array name="cities">
         <item>Duhok</item>
         <item>Zakho</item>

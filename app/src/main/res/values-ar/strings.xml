@@ -34,7 +34,7 @@
     <string name="simple_album_desc">اختار صورك المفضلة واجعلها البوم مطبوعة بشكل بانورامية بمختلف الأحجام و بدقة عالية</string>
     <string name="photo_print_description">حول ذكرياتك الى صورة مطبوعة لكي يبقى عندكم لزمنن اطول</string>
     <string name="home_decor_desc">زيين بيتك بصورك او اعزائك بلأحجام مختلفةودقة عالية مكبوسة على الخشب جاهزة للتعليق</string>
-    <string name="phone_number">Phone number</string>
+    <string name="phone_number">رقم الهاتف</string>
     <string name="will_call_you">سيتم الاتصال بك خلال 6 ساعات القادمة</string>
     <string name="address">العنوان</string>
     <string name="chose_a_city">اختار مدينتك:</string>
@@ -59,4 +59,8 @@
     <string name="successfully">نجاح العملية</string>
     <string name="layout">تقسيم الصورة</string>
     <string name="add_text_cover">لاضافة كتابة على الغلاف الخلفي للالبوم</string>
+    <string name="please_wait">الرجاء الانتظار</string>
+    <string name="send_as_gift">ارسال كهدية</string>
+    <string name="order_informations">معلومات الطلب</string>
+    <string name="wait_loading">جاري التحميل، ممكن ان يستغرق فترة من الزمن۔۔۔</string>
 </resources>

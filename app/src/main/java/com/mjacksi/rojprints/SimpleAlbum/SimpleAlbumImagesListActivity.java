@@ -79,8 +79,8 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_simple_album_images_list);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("In progress...");
-        progressDialog.setMessage("Loading...");
+        progressDialog.setTitle(getString(R.string.please_wait));
+        progressDialog.setMessage(getString(R.string.wait_loading));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setIndeterminate(false);
         progressDialog.setMax(100);
@@ -344,6 +344,7 @@ public class SimpleAlbumImagesListActivity extends AppCompatActivity {
             project.setImages(images);
             project.setPrice(pricePrePage);
             project.setSize(title);
+            project.setType("Album");
             project.setDate(Utilises.getCurrentTime());
             project.setSquare(ratio[0] == ratio[1]);
         }

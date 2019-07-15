@@ -19,7 +19,7 @@ public class InternetConnection {
         NetworkInfo activeNetworkInfo = connMgr.getActiveNetworkInfo();
 
         if (activeNetworkInfo != null) { // connected to the internet
-            Toast.makeText(context, activeNetworkInfo.getTypeName(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, activeNetworkInfo.getTypeName(), Toast.LENGTH_SHORT).show();
 
             // connected to the mobile provider's data plan
             if (activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {

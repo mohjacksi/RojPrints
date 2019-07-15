@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Cart.OrderActivity">
+    tools:context=".Cart.OrderActivity"
+    android:keepScreenOn="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -164,6 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:entries="@array/cities"
+
                     android:prompt="@string/city_prompt"
                     android:spinnerMode="dialog" />
             </LinearLayout>
@@ -331,12 +333,6 @@
                 android:textColor="@android:color/white"
                 android:onClick="order"
                 android:textSize="24sp" />
-
-            <WebView
-                android:id="@+id/webview2"
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                tools:ignore="WebViewLayout" />
 
         </LinearLayout>
     </ScrollView>

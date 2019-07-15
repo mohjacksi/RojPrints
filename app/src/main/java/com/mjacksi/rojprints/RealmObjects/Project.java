@@ -151,7 +151,7 @@ public class Project extends RealmObject {
         String s = "";
         ImageRealm image = images.get(0);
 
-        s += "["; // "id":{
+        s += "{"; // "id":{
         //s += "\"" + id + "\":["; // "id":{
         s += "\"url\":\"" + image.getUrl() + "\",";
         s += "\"num\":\"" + countAtCart + "\",";
@@ -159,18 +159,18 @@ public class Project extends RealmObject {
         s += "\"size\":\"" + size + "\",";
         s += "\"type\":\"" + type + "\",";
         s += "\"price\":\"" + getTotalPrice() + "\",";
-        s += "\"url2\":\"\"],";
+        s += "\"url2\":\"\"},";
         return s;
     }
 
-    public String getPageJson() {
+    public String getPageJson(int base) {
         String s = "";
         for (int i = 0; i < images.size(); i++) {
             ImageRealm image = images.get(i);
-            s += "["; // "id":{
+            s += "\"" + (base*i) + "\"" + ":{"; // "id":{
             //s += "\"" + UUID.randomUUID().toString() + "\":["; // "id":{
             s += "\"" + i + "\":\"" + image.getUrl() + "\",";
-            s += "\"parent\":\"" + id + "\"],";
+            s += "\"parent\":\"" + id + "\"},";
         }
         return s;
     }

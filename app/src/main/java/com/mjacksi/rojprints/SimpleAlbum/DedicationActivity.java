@@ -53,6 +53,7 @@ public class DedicationActivity extends AppCompatActivity {
     int images_uploaded = 0;
 
     ProgressDialog progressDialog;
+    boolean hasFooter = false;
 
 
     @Override
@@ -99,8 +100,8 @@ public class DedicationActivity extends AppCompatActivity {
         });
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("In progress...");
-        progressDialog.setMessage("Loading...");
+        progressDialog.setTitle(getString(R.string.please_wait));
+        progressDialog.setMessage(getString(R.string.wait_loading));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setIndeterminate(false);
         progressDialog.setMax(100);
@@ -125,16 +126,12 @@ public class DedicationActivity extends AppCompatActivity {
         });
     }
 
-    public void addFooter(View v) {
-
-
-    }
-
 
     public void preview(View view) {
-
-        saveAlbum();
-        uploadImages(project);
+        if (!hasFooter) {
+            saveAlbum();
+            uploadImages(project);
+        }
 
     }
 
@@ -147,15 +144,17 @@ public class DedicationActivity extends AppCompatActivity {
             RealmList<ImageRealm> images = project.getImages();
             String name = UUID.randomUUID().toString();
             ImageRealm image = new ImageRealm(name, footer_path);
+            image.setUrl("");
             images.add(image);
             //project.setImages(images);
             realm.commitTransaction();
             realm.close();
+
         }
     }
 
 
-    String screenshot(){
+    String screenshot() {
         Bitmap bitmap = ScreenShott.getInstance().takeScreenShotOfView(screenshot);
         File file = null;
         try {
@@ -177,7 +176,7 @@ public class DedicationActivity extends AppCompatActivity {
             images_counter++;
         }
 
-        Log.d(TAG, "uploadImages: " +  images_counter);
+        Log.d(TAG, "uploadImages: " + images_counter);
 
 
         progressDialog.setMax(images_counter);
@@ -258,12 +257,15 @@ public class DedicationActivity extends AppCompatActivity {
 
     private void preview() {
         Intent intent = new Intent(DedicationActivity.this, PreviewActivity.class);
-        intent.putExtra("album_id",project.getId());
+        intent.putExtra("album_id", project.getId());
         startActivity(intent);
     }
 
 
     public void addToCart(View view) {
+        if (!hasFooter) {
+            saveAlbum();
+        }
         Toast.makeText(this, getString(R.string.added_to_cart), Toast.LENGTH_SHORT).show();
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();

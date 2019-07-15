@@ -6,12 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -29,32 +35,29 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+import com.mjacksi.rojprints.MainActivity;
 import com.mjacksi.rojprints.R;
 import com.mjacksi.rojprints.RealmObjects.ImageRealm;
 import com.mjacksi.rojprints.RealmObjects.Project;
+import com.mjacksi.rojprints.SimpleAlbum.DedicationActivity;
 import com.mjacksi.rojprints.Utilises.InternetConnection;
+import com.mjacksi.rojprints.Utilises.RetrofitClient;
 
 import org.json.JSONArray;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
-import needle.Needle;
-import needle.UiRelatedProgressTask;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class OrderActivity extends AppCompatActivity {
 
@@ -62,7 +65,9 @@ public class OrderActivity extends AppCompatActivity {
     TextView nameTv, addressTv, notesTv, totalTv; //phoneTv
     Spinner citySp;
     Switch giftSw, deliverySw;
-    String phone, name, address, notes, total, city, gift, delivery;
+    String phone, name, address, notes, total, city;//pageJson, cardsArray;
+    boolean gift, delivery;
+
     private StorageReference mStorageRef;
 
     RealmResults<Project> projects;
@@ -83,6 +88,56 @@ public class OrderActivity extends AppCompatActivity {
         deliverySw = findViewById(R.id.order_delivery_switch);
 
 
+        int[] CITYPRICE = {3000, 5000, 5000, 5000, 10000, 10000};
+        citySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (deliverySw.isChecked()) {
+                    int price = 0;
+                    price += CITYPRICE[position];
+                    for (Project project : projects
+                    ) {
+                        price += project.getTotalPrice();
+                    }
+                    totalTv.setText(price + " IQD");
+                } else {
+                    int price = 0;
+                    for (Project project : projects
+                    ) {
+                        price += project.getTotalPrice();
+                    }
+                    totalTv.setText(price + " IQD");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        deliverySw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    int price = 0;
+                    price += CITYPRICE[citySp.getSelectedItemPosition()];
+                    for (Project project : projects
+                    ) {
+                        price += project.getTotalPrice();
+                    }
+                    totalTv.setText(price + " IQD");
+                } else {
+                    int price = 0;
+                    for (Project project : projects
+                    ) {
+                        price += project.getTotalPrice();
+                    }
+                    totalTv.setText(price + " IQD");
+                }
+            }
+        });
+
         toolbarSetup("Order");
         calculateTotal();
         mStorageRef = FirebaseStorage.getInstance().getReference().child("Mj");
@@ -98,8 +153,8 @@ public class OrderActivity extends AppCompatActivity {
 
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("In progress...");
-        progressDialog.setMessage("Loading...");
+        progressDialog.setTitle(getString(R.string.please_wait));
+        progressDialog.setMessage(getString(R.string.wait_loading));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setIndeterminate(false);
         progressDialog.setMax(100);
@@ -165,15 +220,15 @@ public class OrderActivity extends AppCompatActivity {
         name = nameTv.getText().toString();
         address = addressTv.getText().toString();
         notes = notesTv.getText().toString();
-        total = totalTv.getText().toString();
+        total = totalTv.getText().toString().replace(" IQD", "");
         city = String.valueOf(citySp.getSelectedItem());
-        gift = String.valueOf(giftSw.isChecked());
-        delivery = String.valueOf(deliverySw.isChecked());
+        gift = giftSw.isChecked();
+        delivery = deliverySw.isChecked();
 
 
         if (phone.isEmpty() || name.isEmpty() || address.isEmpty()
-                || notes.isEmpty() || total.isEmpty() || city.isEmpty()
-                || gift.isEmpty() || delivery.isEmpty()) {
+                || total.isEmpty() || city.isEmpty()
+        ) {
             Toast.makeText(this, getString(R.string.please_fill_all), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -203,21 +258,21 @@ public class OrderActivity extends AppCompatActivity {
 
     public String getPost() {
         List<String> map = new ArrayList<>();
-        map.add("NotificationId=" + ""); // TODO ?
-        map.add("&friendPhone=" + ""); // TODO ?
+        map.add("NotificationId=" + "123456789"); // TODO ?
+        map.add("&friendPhone=" + "07500000000"); // TODO ?
         map.add("&AuthKey=" + "authkeyavrazauthkey29");
         map.add("&City=" + city);
-        map.add("&isDelivery=" + delivery);
+        map.add("&isDelivery=" + (delivery ? 1 : 0));
         map.add("&Address=" + address);
         map.add("&UserName=" + name);
         map.add("&Payment=" + "الدفع عند الاستلام"); // TODO !
-        map.add("&cards=" + ""); // TODO
+        //map.add("&cards=" + ""); // TODO
         map.add("&TotalePrice=" + total);
         map.add("&pageJson=" + getPageJson());
         map.add("&Note=" + notes);
         map.add("&PhoneNumber=" + phone);
         map.add("&cardsArray=" + getCardsArray());
-        map.add("&isGift=" + gift);
+        map.add("&isGift=" + (gift ? 1 : 0));
 
 
         String post = "";
@@ -228,40 +283,37 @@ public class OrderActivity extends AppCompatActivity {
         return post;
     }
 
+
     private String getCardsArray() {
         String s = "[";
         for (Project project :
                 projects) {
-            if (project.getImages().size() > 1) continue;
+//            if (project.getImages().size() > 1) continue;
             s += project.getCardArrayJson();
         }
         if (s.length() > 1) {
             s = s.substring(0, s.length() - 1);
         }
         s += "]";
-        Log.d(TAG, "getPageJson: \n\n\n");
-        Log.d(TAG, "getCardsArray: " + s);
-        Log.d(TAG, "getPageJson: \n\n\n");
-
-
         return s;
     }
 
     private String getPageJson() {
-        String s = "[";
+        int i = 1;
+        String s = "{";
         for (Project project :
                 projects) {
             if (project.getImages().size() < 14) continue;
-            s += project.getPageJson();
+            s += project.getPageJson(i++);
         }
         if (s.length() > 1) {
             s = s.substring(0, s.length() - 1);
         }
-        s += "]";
+        s += "}";
         int chunkSize = 2048;
 
         Log.d(TAG, "getPageJson: \n\n\n");
-        for (int i = 0; i < s.length(); i += chunkSize) {
+        for (i = 0; i < s.length(); i += chunkSize) {
             Log.d("", s.substring(i, Math.min(s.length(), i + chunkSize)));
         }
         Log.d(TAG, "getPageJson: \n\n\n");
@@ -271,63 +323,66 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     public void sendPost() {
-
-        //String post = getPost();
-
-//
-//        OkHttpClient client = new OkHttpClient();
-//
-//        RequestBody formBody = new FormBody.Builder()
-//                .add("NotificationId", "") // TODO ?
-//                .add("&friendPhone=", "") // TODO ?
-//                .add("&AuthKey=", "authkeyavrazauthkey29")
-//                .add("&City=", city)
-//                .add("&isDelivery=", delivery)
-//                .add("&Address=", address)
-//                .add("&UserName=", name)
-//                .add("&Payment=", "الدفع عند الاستلام")// TODO !
-//                .add("&cards=", "") // TODO
-//                .add("&TotalePrice=", total)
-//                .add("&pageJson=", getPageJson())
-//                .add("&Note=", notes)
-//                .add("&PhoneNumber=", phone)
-//                .add("&cardsArray=", getCardsArray())
-//                .add("&isGift=", gift).build();
-//
-//        Request request = new Request.Builder()
-//                .url("http://rojprint.com/admin/ajax/ajax_orders.php")
-//                .post(formBody)
-//                .build();
-//
-
-
-        WebView webView = findViewById(R.id.webview2);
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webView.setVisibility(View.VISIBLE);
-
         String postData = getPost();
 
-        try {
-            webView.postUrl("http://rojprint.com/admin/ajax/ajax_orders.php", postData.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+
+        post();
 
         int chunkSize = 2048;
-        Log.d(TAG, "post: \n\n\n");
+
+
         for (int i = 0; i < postData.length(); i += chunkSize) {
             Log.d("", postData.substring(i, Math.min(postData.length(), i + chunkSize)));
         }
-        Log.d(TAG, "post: \n\n\n");
-        //TODO: delete all projects after upload
-        deleteAllProjects();
+
 
     }
 
-    private void deleteAllProjects() {
+    void post() {
 
+
+        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().post(
+                "123456789",
+                "",
+                "authkeyavrazauthkey29",
+                city,
+                String.valueOf(delivery ? 1 : 0),
+                address,
+                name,
+                "الدفع عند الاستلام",
+                total,
+                getPageJson(),
+                notes,
+                phone,
+                getCardsArray(),
+                String.valueOf(gift ? 1 : 0));
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    deleteAllProjects();
+
+                    Toast.makeText(OrderActivity.this, getString(R.string.thank_you), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(OrderActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void deleteAllProjects() {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        projects = realm.where(Project.class).equalTo("isInCart", true).findAll();
+        projects.deleteAllFromRealm();
+        realm.commitTransaction();
+        realm.close();
     }
 
     List<ImageRealm> images = new ArrayList<>();
@@ -356,6 +411,7 @@ public class OrderActivity extends AppCompatActivity {
             Project project = projects.get(i);
             RealmList<ImageRealm> images = project.getImages();
             StorageReference storageRef = mStorageRef.child("M-" + project.getId());
+            Log.d(TAG, "uploadImages: " + images.size());
             for (int j = 0; j < images.size(); j++) {
                 ImageRealm image = images.get(j);
                 if (!image.getUrl().equals("")) {
@@ -383,10 +439,9 @@ public class OrderActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()) {
-                            updateProgress();
 
-                            Log.d(TAG, "onComplete: " + images_uploaded);
-                            Log.d(TAG, "onComplete: " + images_counter);
+                            Log.d(TAG, "onComplete images_uploaded: " + images_uploaded);
+                            Log.d(TAG, "onComplete images_counter: " + images_counter);
                             Uri downloadUri = task.getResult();
                             Realm realm = Realm.getDefaultInstance();
                             realm.beginTransaction();
@@ -394,6 +449,7 @@ public class OrderActivity extends AppCompatActivity {
                             realm.commitTransaction();
                             realm.close();
 
+                            updateProgress();
                             Log.d(TAG, "then: " + downloadUri);
                         } else {
                             // Handle failures
@@ -421,9 +477,19 @@ public class OrderActivity extends AppCompatActivity {
                     .setTitle(getString(R.string.successfully))
                     .setMessage(getString(R.string.thank_you))
                     .setIcon(R.drawable.ic_done)
+                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            Intent intent = new Intent(OrderActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    })
                     .show();
 
             sendPost();
         }
     }
+
+
 }

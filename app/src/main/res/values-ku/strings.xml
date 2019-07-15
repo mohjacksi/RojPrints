@@ -19,7 +19,7 @@
     <string name="hode_decor_title">مه‌زنكرنا وێنا</string>
     <string name="home_decor">مه‌زنكرنا وێنا</string>
     <string name="home_decor_desc">مالا خو بخه‌ملینه‌ ب جوانترین وێنێت خو یان خوشتڤیێت خو ب هه‌می قه‌بارا وكوالتیه‌كا به‌رز  وێنه‌ لسه‌ر داری كه‌بس كری ئاماده‌ بو هه‌لاویستنێ</string>
-    <string name="phone_number">Phone number</string>
+    <string name="phone_number">رقم الهاتف</string>
     <string name="will_call_you">تێبینی: دێ په‌یوه‌ندی بته‌ هیته‌ كرن د ماوی 6 كاتژمێریت دا هاتی دا پشتی په‌سه‌ند كرنێ</string>
     <string name="address">"ناڤونیشان "</string>
     <string name="chose_a_city">"ناڤێ باژێری هه‌لبژیره:‌  "</string>
@@ -48,4 +48,18 @@
     <string name="change_image">گهورینا وێنەی</string>
     <string name="change_ratio">دێوێرینا وێنەی</string>
     <string name="add_text_cover">بو زیده‌كرنا نفیسینێ لسه‌ر بشتا كه‌فرێ ێه‌لبومێ</string>
+    <string name="please_wait">الرجاء الانتظار</string>
+    <string name="send_as_gift">ارسال كهدية</string>
+    <string name="_14_images_max">20 عدد الصور الاقصى</string>
+    <string name="added_to_cart">تم الاضافة للسلة</string>
+    <string name="chose_action">اختر العملية:</string>
+    <string name="chose_language">اختر اللغة:</string>
+    <string name="cover_image_description">غلاف الالبوم</string>
+    <string name="crop_and_rotate">قص وتدوير</string>
+    <string name="images_number_should_even">عدد الصور يجب ان يكون زوجي</string>
+    <string name="layout">تقسيم الصورة</string>
+    <string name="min_images_number_14">14 اقل عدد لكل البوم</string>
+    <string name="new_album">البوم جديد</string>
+    <string name="order_informations">معلومات الطلب</string>
+    <string name="wait_loading">جاري التحميل، ممكن ان يستغرق فترة من الزمن۔۔۔</string>
 </resources>
