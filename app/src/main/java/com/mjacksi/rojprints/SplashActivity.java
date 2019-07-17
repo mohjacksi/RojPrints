@@ -23,7 +23,6 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        Realm.init(this);
 
         //  Initialize SharedPreferences
         SharedPreferences getPrefs = PreferenceManager
@@ -32,12 +31,12 @@ public class SplashActivity extends AppCompatActivity {
         String language = getPrefs.getString("language", "ar");
 
 
-        if (language.equals("ku")) {
-            setLocale("ku");
+        if (language.equals("ar")) {
+            setLocale("ar");
         } else if (language.equals("en")) {
             setLocale("en");
         } else {
-            setLocale("ar");
+            setLocale("ku");
         }
 
 

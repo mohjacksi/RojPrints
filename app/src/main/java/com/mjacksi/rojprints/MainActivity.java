@@ -21,6 +21,8 @@ import com.mjacksi.rojprints.MainFragments.ProjectsFragment;
 import com.mjacksi.rojprints.MainFragments.SettingsFragment;
 import com.mjacksi.rojprints.MainFragments.ShopFragment;
 
+import io.realm.Realm;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Realm.init(this);
 
 
 
