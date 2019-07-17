@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Locale;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -124,7 +123,7 @@ public class SettingsFragment extends Fragment {
                         builder.setItems(items, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int item) {
                                 dialog.dismiss();
-                                switch (item){
+                                switch (item) {
                                     case 0:
                                         setLocale("en");
                                         break;
@@ -133,15 +132,14 @@ public class SettingsFragment extends Fragment {
                                         break;
                                     case 2:
                                         setLocale("ku");
-                                                                                break;
-
+                                        break;
                                 }
                             }
                         }).show();
                         break;
                     case 2:
-                            Intent intent = new Intent(getActivity(), AboutActivity.class);
-                            startActivity(intent);
+                        Intent intent = new Intent(getActivity(), AboutActivity.class);
+                        startActivity(intent);
                         break;
                     case 3:
                         String url = "http://www.rojprint.com";

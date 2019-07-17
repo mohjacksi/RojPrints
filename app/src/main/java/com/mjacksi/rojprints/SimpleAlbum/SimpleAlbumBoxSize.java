@@ -3,6 +3,7 @@ package com.mjacksi.rojprints.SimpleAlbum;
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,17 +17,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.google.android.material.tabs.TabLayout;
+import com.mjacksi.rojprints.PhotoPrint.PhotoPrintSize;
 import com.mjacksi.rojprints.R;
+import com.mjacksi.rojprints.SliderAdapter;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SimpleAlbumBoxSize extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,36 +54,44 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
             }
         });
 
-        SliderLayout mDemoSlider  = (SliderLayout)findViewById(R.id.slider);;
 
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("1",R.drawable.album1);
-        file_maps.put("2",R.drawable.album2);
-        file_maps.put("3",R.drawable.album3);
-        file_maps.put("4", R.drawable.album4);
-        file_maps.put("5", R.drawable.album5);
-        file_maps.put("6", R.drawable.album6);
+        // Start Slider
+        List<Integer> imagesPager = new ArrayList<>();
+        imagesPager.add(R.drawable.album1);
+        imagesPager.add(R.drawable.album2);
+        imagesPager.add(R.drawable.album3);
+        imagesPager.add(R.drawable.album4);
+        imagesPager.add(R.drawable.album5);
+        imagesPager.add(R.drawable.album6);
 
-        for(String name : file_maps.keySet()){
-            TextSliderView textSliderView = new TextSliderView(this);
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(file_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
-            //.setOnSliderClickListener(this);
+        SliderView sliderView = findViewById(R.id.imageSlider);
+        sliderView.setSliderAdapter(new SliderAdapter(this,imagesPager));
+        sliderView.startAutoCycle();
+        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM);
+        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
 
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra",name);
-
-            mDemoSlider.addSlider(textSliderView);
-        }
-        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-        mDemoSlider.setDuration(4000);
+        // End Slider
+//
+//        for(String name : file_maps.keySet()){
+//            TextSliderView textSliderView = new TextSliderView(this);
+//            // initialize a SliderLayout
+//            textSliderView
+//                    .description(name)
+//                    .image(file_maps.get(name))
+//                    .setScaleType(BaseSliderView.ScaleType.Fit);
+//            //.setOnSliderClickListener(this);
+//
+//            //add your extra information
+//            textSliderView.bundle(new Bundle());
+//            textSliderView.getBundle()
+//                    .putString("extra",name);
+//
+//            mDemoSlider.addSlider(textSliderView);
+//        }
+//        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+//        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+//        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+//        mDemoSlider.setDuration(4000);
 
         toolbarSetup();
     }
@@ -140,4 +153,5 @@ public class SimpleAlbumBoxSize extends AppCompatActivity {
             return convertView;
         }
     }
+
 }

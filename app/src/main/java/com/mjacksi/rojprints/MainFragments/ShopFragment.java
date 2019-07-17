@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +16,20 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.google.android.material.tabs.TabLayout;
 import com.mjacksi.rojprints.PhotoPrint.PhotoPrintSize;
 import com.mjacksi.rojprints.R;
 import com.mjacksi.rojprints.SimpleAlbum.SimpleAlbumBoxSize;
+import com.mjacksi.rojprints.SliderAdapter;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -33,7 +39,7 @@ public class ShopFragment extends Fragment {
 
     ImageButton simpleAlbum, photoPrint, homeDecor;
 
-    RotateAnimation animation = new RotateAnimation(0,360, Animation.RELATIVE_TO_SELF,0.5f , Animation.RELATIVE_TO_SELF,0.5f );
+    RotateAnimation animation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 
 
     public ShopFragment() {
@@ -49,38 +55,49 @@ public class ShopFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_shop, container, false);
 
+        // Start Slider
+
+        List<Integer> imagesPager = new ArrayList<>();
+        imagesPager.add(R.drawable.slidshow1);
+        imagesPager.add(R.drawable.slidshow2);
+        imagesPager.add(R.drawable.slidshow3);
+        imagesPager.add(R.drawable.slidshow4);
+
+        SliderView sliderView = view.findViewById(R.id.imageSlider);
+        sliderView.setSliderAdapter(new SliderAdapter(getContext(),imagesPager));
+        sliderView.startAutoCycle();
+        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM);
+        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+
+        // End Slider
 
         simpleAlbum = view.findViewById(R.id.simple_album_button);
         photoPrint = view.findViewById(R.id.photo_print_button);
         homeDecor = view.findViewById(R.id.home_decor_button);
 
-        simpleAlbum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), SimpleAlbumBoxSize.class);
+        simpleAlbum.setOnClickListener(v -> {
+            Intent i = new Intent(getContext(), SimpleAlbumBoxSize.class);
 
-                animation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
-                    }
+                }
 
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        startActivity(i);
-                    }
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    startActivity(i);
+                }
 
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
+                @Override
+                public void onAnimationRepeat(Animation animation) {
 
-                    }
-                });
+                }
+            });
 
 
+            v.startAnimation(animation);
 
-                v.startAnimation(animation);
-
-            }
         });
         photoPrint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,37 +150,6 @@ public class ShopFragment extends Fragment {
 
             }
         });
-
-
-        SliderLayout mDemoSlider = (SliderLayout) view.findViewById(R.id.slider);
-        ;
-
-        HashMap<String, Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("1", R.drawable.slidshow1);
-        file_maps.put("2", R.drawable.slidshow2);
-        file_maps.put("3", R.drawable.slidshow3);
-        file_maps.put("4", R.drawable.slidshow4);
-
-        for (String name : file_maps.keySet()) {
-            TextSliderView textSliderView = new TextSliderView(getContext());
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(file_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
-            //.setOnSliderClickListener(this);
-
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra", name);
-
-            mDemoSlider.addSlider(textSliderView);
-        }
-        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-        mDemoSlider.setDuration(4000);
 
         return view;
     }

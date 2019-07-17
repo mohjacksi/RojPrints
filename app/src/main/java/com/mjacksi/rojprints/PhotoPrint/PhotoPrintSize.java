@@ -2,6 +2,7 @@ package com.mjacksi.rojprints.PhotoPrint;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,20 +18,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.google.android.material.tabs.TabLayout;
+import com.mjacksi.rojprints.MainFragments.ShopFragment;
 import com.mjacksi.rojprints.R;
 import com.mjacksi.rojprints.SimpleAlbum.SimpleAlbumImagesListActivity;
+import com.mjacksi.rojprints.SliderAdapter;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PhotoPrintSize extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +43,8 @@ public class PhotoPrintSize extends AppCompatActivity {
 
         final ArrayList<ImageSize> boxSizes = new ArrayList<>();
 
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
 
+        List<Integer> imagesPager = new ArrayList<>();
 
         if(getIntent().getStringExtra("type").equals("photo_print")) {
             toolbarSetup(getString(R.string.photo_print_titile));
@@ -50,11 +55,11 @@ public class PhotoPrintSize extends AppCompatActivity {
             boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "4000 IQD",R.drawable.photos6,4000));
             boxSizes.add(new ImageSize(1, 1.3f, "4.5 X 3.5 cm", "8000 IQD",R.drawable.photos8,8000));
             boxSizes.add(new ImageSize(1, 1, "5 X 5 cm", "5000",R.drawable.photos6_5x5,5000));
-            file_maps.put("1",R.drawable.photo_print1);
-            file_maps.put("2",R.drawable.photo_print2);
-            file_maps.put("3",R.drawable.photo_print3);
-            file_maps.put("4",R.drawable.photo_print4);
-            file_maps.put("5",R.drawable.photo_print5);
+            imagesPager.add(R.drawable.photo_print1);
+            imagesPager.add(R.drawable.photo_print2);
+            imagesPager.add(R.drawable.photo_print3);
+            imagesPager.add(R.drawable.photo_print4);
+            imagesPager.add(R.drawable.photo_print5);
 
         }else{
             TextView description = findViewById(R.id.description);
@@ -68,15 +73,29 @@ public class PhotoPrintSize extends AppCompatActivity {
             boxSizes.add(new ImageSize(1, 1.5f, "50 X 75 cm", "45,000 IQD",R.drawable._50x75,45000));
             boxSizes.add(new ImageSize(1, 1.5f, "60 X 90 cm", "60,000 IQD",R.drawable._60x90,6000));
 
-            file_maps.put("1",R.drawable.bigimage1);
-            file_maps.put("2",R.drawable.bigimage2);
-            file_maps.put("3",R.drawable.bigimage3);
-            file_maps.put("4", R.drawable.bigimage4);
-            file_maps.put("5", R.drawable.bigimage5);
-            file_maps.put("6", R.drawable.bigimage6);
-            file_maps.put("7", R.drawable.bigimage7);
+            imagesPager.add(R.drawable.bigimage1);
+            imagesPager.add(R.drawable.bigimage2);
+            imagesPager.add(R.drawable.bigimage3);
+            imagesPager.add(R.drawable.bigimage4);
+            imagesPager.add(R.drawable.bigimage5);
+            imagesPager.add(R.drawable.bigimage6);
+            imagesPager.add(R.drawable.bigimage7);
 
         }
+
+
+        // Start Slider
+
+
+        SliderView sliderView = findViewById(R.id.imageSlider);
+        sliderView.setSliderAdapter(new SliderAdapter(this,imagesPager));
+        sliderView.startAutoCycle();
+        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM);
+        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+
+        // End Slider
+
+
         ListView list = findViewById(R.id.box_size_listview);
         list.setAdapter(new BoxSizesAdapter(this,boxSizes));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,29 +110,29 @@ public class PhotoPrintSize extends AppCompatActivity {
             }
         });
 
-        SliderLayout mDemoSlider  = (SliderLayout)findViewById(R.id.slider);;
-
-
-        for(String name : file_maps.keySet()){
-            TextSliderView textSliderView = new TextSliderView(this);
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(file_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
-            //.setOnSliderClickListener(this);
-
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra",name);
-
-            mDemoSlider.addSlider(textSliderView);
-        }
-        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-        mDemoSlider.setDuration(4000);
+//        SliderLayout mDemoSlider  = (SliderLayout)findViewById(R.id.slider);;
+//
+//
+//        for(String name : file_maps.keySet()){
+//            TextSliderView textSliderView = new TextSliderView(this);
+//            // initialize a SliderLayout
+//            textSliderView
+//                    .description(name)
+//                    .image(file_maps.get(name))
+//                    .setScaleType(BaseSliderView.ScaleType.Fit);
+//            //.setOnSliderClickListener(this);
+//
+//            //add your extra information
+//            textSliderView.bundle(new Bundle());
+//            textSliderView.getBundle()
+//                    .putString("extra",name);
+//
+//            mDemoSlider.addSlider(textSliderView);
+//        }
+//        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+//        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+//        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+//        mDemoSlider.setDuration(4000);
     }
     private void toolbarSetup(String title) {
         Toolbar toolbar = findViewById(R.id.order_toolbar);
